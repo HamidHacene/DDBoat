@@ -38,14 +38,14 @@ void cible(){
 
 
 int main(int argc, char **argv){
-    ros::init(argc, argv, "control");
+    ros::init(argc, argv, "target");
 
 
     //PUBLISHERS
     ros::NodeHandle xcible;
     ros::NodeHandle vcible;
     ros::Publisher pub1 = xcible.advertise<geometry_msgs::Vector3>("position_cible", 1000);
-    ros::Publisher pub2 = vcible.advertise<geometry_msgs::Vector3>("position_cible", 1000);
+    ros::Publisher pub2 = vcible.advertise<geometry_msgs::Vector3>("vitesse_cible", 1000);
 
 
 
@@ -53,17 +53,17 @@ int main(int argc, char **argv){
     while (ros::ok()){
         ros::spinOnce();
 
-        geometry_msgs::Vector3 position_cible;
-        geometry_msgs::Vector3 vitesse_cible;
+        geometry_msgs::Vector3 pos_cible;
+        geometry_msgs::Vector3 vit_cible;
         cible();
-        position_cible.x = Xcible[0];
-        position_cible.y = Xcible[1];
-        position_cible.x = Vcible[0];
-        position_cible.y = Xcible[1];
+        pos_cible.x = Xcible[0];
+        pos_cible.y = Xcible[1];
+        vit_cible.x = Vcible[0];
+        vit_cible.y = Vcible[1];
 
 
-        pub1.publish(position_cible);
-        pub2.publish(vitesse_cible);
+        pub1.publish(pos_cible);
+        pub2.publish(vit_cible);
 
         loop_rate.sleep();
 
