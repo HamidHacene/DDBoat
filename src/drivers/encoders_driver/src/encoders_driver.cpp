@@ -93,7 +93,16 @@ void get_encoders_data()
     bool sync = true;
     string data;
     string v = encoder.read(17);
-    //cout << "encoders values : " << v << endl;
+    cout << "encoders values : ";
+
+    for(int i = 0; i < 17; i++)
+    {
+        cout << (int) v[i] << "."; 
+    }
+
+    cout << endl;
+
+    /*
     
 
     int c1 = (int) v[0];
@@ -123,7 +132,7 @@ void get_encoders_data()
         voltLeft = voltLeft + (int)v[13];
         voltRight = (int)(v[14] << 8);
         voltRight = voltRight + (int)v[15];
-    }
+    }*/
 
-    cout << "values -> " << posLeft << endl;
+    //cout << "values -> " << posLeft << endl;
 }
