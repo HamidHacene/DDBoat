@@ -14,11 +14,11 @@ using namespace std;
 
 string port = "/dev/ttyACM0";
 int baudrate = 115200;
- serial::Serial arduino(port, baudrate, serial::Timeout::simpleTimeout(1000));
+serial::Serial arduino(port, baudrate, serial::Timeout::simpleTimeout(1000));
 
 void sleep(unsigned long miliseconds);
 int cast_cmd(int cmd);
-void send_arduino_motor_cmd(serial::Serial arduino, int cmdl, int cmdr);
+void send_arduino_motor_cmd(int cmdl, int cmdr);
 
 // Attention à bien inclure chaque type de message !
 int main(int argc, char **argv)
@@ -43,7 +43,7 @@ int main(int argc, char **argv)
     while (ros::ok())
     {
 
-        send_arduino_motor_cmd(arduino, 100, 100);
+        send_arduino_motor_cmd(100, 100);
 
         ros::spinOnce();
         // Pause
