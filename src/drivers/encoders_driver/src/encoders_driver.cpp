@@ -67,7 +67,7 @@ void get_encoders_data()
 {
     bool sync = true;
     string data;
-    string v = encoder.read(17)
+    string v = encoder.read(17);
     cout << "encoders values : " << v << endl;
 
     /*
