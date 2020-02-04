@@ -69,8 +69,8 @@ int main(int argc, char **argv)
 void sync_encoders()
 {
     char b;
-    bool sync = false;
-    while(!sync)
+    bool sync_test = false;
+    while(!sync_test)
     {
         b = encoder.read(1)[0];
         if(int(b) = 0xff)
@@ -78,7 +78,7 @@ void sync_encoders()
             b = encoder.read(1)[0];
             if(int(b) = 0x0d)
             {
-                sync = true;
+                sync_test = true;
             }
         }      
     }
@@ -109,7 +109,7 @@ void get_encoders_data()
     if (c1 != 0xff || c2 != 0x0d)
     {
         cout << "not sync..." << endl;
-        sync();
+        sync_encoders();
     }
     else
     {
