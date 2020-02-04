@@ -17,6 +17,7 @@ string port = "/dev/ttyUSB0";
 int baudrate = 115200;
 serial::Serial encoder(port, baudrate, serial::Timeout::simpleTimeout(1000));
 
+
 int cast_cmd(int cmd);
 void send_arduino_motor_cmd(int cmdl, int cmdr);
 //void get_encoders_data(geometry_msgs::Pose2D &data);
@@ -51,16 +52,20 @@ int main(int argc, char **argv)
     geometry_msgs::Pose2D encoders_data;
 
     sync_encoders();
-    int c_l, c_r;
+    int c_l, c_r, old_r, old_l;
+    double t;
+    double t0 = ros::Time::now().toSec();
 
     while (ros::ok())
     {
-
+        
         get_encoders_data(c_l, c_r);
 
-
-        encoders_data.x = c_l;
-        encoders_data.y = c_r;
+        t = ros::Time::now().toSec();
+        encoders_data.x = (c_l - old_l)/(t - t0);
+        encoders_data.y = (c_r - old_r)/(t - t0);
+        t = t0;
+        
         encoder_pub.publish(encoders_data);
         //encoder_pub.publish(encoder_data);
 
@@ -77,25 +82,23 @@ void sync_encoders()
     cout << "attemp to sync..." << endl;
     char b;
     bool sync_test = false;
-    while(!sync_test)
+    while (!sync_test)
     {
         b = encoder.read(1)[0];
-        if(int(b) == 0xff)
+        if (int(b) == 0xff)
         {
-            cout << "v[0] : " << (int) b;
+            cout << "v[0] : " << (int)b;
             b = encoder.read(1)[0];
-            if(int(b) == 0x0d)
+            if (int(b) == 0x0d)
             {
                 sync_test = true;
             }
-            cout << " | v[1] : " << (int) b << endl;
-            
-        }      
+            cout << " | v[1] : " << (int)b << endl;
+        }
     }
     string data = encoder.read(15);
 
     cout << "Sync ok" << endl;
-    
 }
 
 void get_encoders_data(int &c_l, int &c_r)
@@ -112,9 +115,8 @@ void get_encoders_data(int &c_l, int &c_r)
 
     cout << endl;*/
 
-    
-    int c1 = (int) v[0];
-    int c2 = (int) v[1];
+    int c1 = (int)v[0];
+    int c2 = (int)v[1];
 
     int sensLeft;
     int sensRight;
@@ -132,16 +134,17 @@ void get_encoders_data(int &c_l, int &c_r)
     {
         sensLeft = (int)v[6];
         sensRight = (int)v[7];
-        posRight = (int)(v[8])*256;
+        posRight = (int)(v[8]) * 256;
         posRight = posRight + (int)v[9];
-        posLeft = (int)(v[10])*256;
+        posLeft = (int)(v[10]) * 256;
         posLeft = posLeft + (int)v[11];
-        voltLeft = (int)(v[12])*256;
+        voltLeft = (int)(v[12]) * 256;
         voltLeft = voltLeft + (int)v[13];
         voltRight = (int)(v[14]) * 256;
         voltRight = voltRight + (int)v[15];
     }
 
-   c_l = posLeft;
-   c_r = posRight;
+    c_l = posLeft;
+    c_r = posRight;
+
 }
