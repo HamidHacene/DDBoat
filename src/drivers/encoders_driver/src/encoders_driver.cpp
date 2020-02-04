@@ -70,7 +70,7 @@ void get_encoders_data()
     string v = encoder.read(17);
     cout << "encoders values : " << v << endl;
 
-    /*
+    
     char c1 = v[0];
     char c2 = v[1];
     if (c1 != 0xff || c2 != 0x0d)
@@ -80,15 +80,18 @@ void get_encoders_data()
     }
     else
     {
-        char sensLeft = v[6] char sensRight = v[7];
-        char posLeft = v[8] << 8;
-        char posLeft += v[9];
-        char posRight = v[10] << 8;
-        char posRight += v[11];
-        char voltLeft = v[12] << 8;
-        char voltLeft += v[13];
-        char voltRight = v[14] << 8;
-        char voltRight += v[15];
+        int sensLeft = (int) v[6];
+        int sensRight = (int) v[7];
+        int posLeft = (int) v[8] << 8;
+        int posLeft += (int) v[9];
+        int posRight = (int) v[10] << 8;
+        int posRight += (int) v[11];
+        int voltLeft = (int) v[12] << 8;
+        int voltLeft += (int) v[13];
+        int voltRight = (int) v[14] << 8;
+        int voltRight += (int) v[15];
     }
-    */
+
+    cout 
+    
 }
