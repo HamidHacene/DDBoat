@@ -83,7 +83,7 @@ void get_encoders_data()
         int sensLeft = (int) v[6];
         int sensRight = (int) v[7];
         int posLeft = (int) v[8] << 8;
-        posLeft = posLeft (int) v[9];
+        posLeft = posLeft + (int) v[9];
         int posRight = (int) v[10] << 8;
         posRight = posRight + (int) v[11];
         int voltLeft = (int) v[12] << 8;
