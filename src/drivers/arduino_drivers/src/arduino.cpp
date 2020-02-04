@@ -25,16 +25,18 @@ int main(int argc, char **argv)
 {
     // Initialisation du node : le troisième argument est son nom
    
-    cout << "Is the serial port open?";
+    cout << "Ouverture de la connection" << endl;
     if (arduino.isOpen())
     {
-        cout << " Yes." << endl;
+        cout << "OK" << endl;
     }
     else
     {
-        cout << " No." << endl;
+        cout << "** erreur arduino driver **" << endl;
+        return 0;
     }
 
+    ros::init(argc, argv, "arduino_driver");
     ros::NodeHandle n;
     ros::Rate loop_rate(RATE);
 
