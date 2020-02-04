@@ -88,7 +88,7 @@ int main(int argc, char **argv)
         filters::GPose msg;
         msg.east = x0(0);
         msg.north = x0(1);
-        msg.vitesse = x0(3); //
+        msg.vitesse = x0(3); //x, y, theta, v
         msg.heading = x0(2);
         estimated_state_pub.publish(msg);
         // -----------------------------------------------------
