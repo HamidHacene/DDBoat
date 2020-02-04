@@ -21,7 +21,7 @@ int cast_cmd(int cmd);
 void send_arduino_motor_cmd(int cmdl, int cmdr);
 //void get_encoders_data(geometry_msgs::Pose2D &data);
 void get_encoders_data();
-void sync();
+void sync_encoders();
 
 // Attention à bien inclure chaque type de message !
 int main(int argc, char **argv)
@@ -50,6 +50,8 @@ int main(int argc, char **argv)
 
     geometry_msgs::Pose2D encoders_data;
 
+    sync_encoders();
+
     while (ros::ok())
     {
 
@@ -64,17 +66,17 @@ int main(int argc, char **argv)
     return 0;
 }
 
-void sync()
+void sync_encoders()
 {
     char b;
     bool sync = false;
     while(!sync)
     {
-        b = encoder.read(1);
-        if((int) b = 0xff)
+        b = encoder.read(1)[0];
+        if((int(b) = 0xff)
         {
-            b = encoder.read(1);
-            if((int)b = 0x0d)
+            b = encoder.read(1)[0];
+            if(int(b) = 0x0d)
             {
                 sync = true;
             }
@@ -90,6 +92,7 @@ void get_encoders_data()
     string data;
     string v = encoder.read(17);
     //cout << "encoders values : " << v << endl;
+    /*
 
     int c1 = (int) v[0];
     int c2 = (int) v[1];
@@ -120,5 +123,5 @@ void get_encoders_data()
         voltRight = voltRight + (int)v[15];
     }
 
-    cout << "values -> " << posLeft << endl;
+    cout << "values -> " << posLeft << endl;*/
 }
