@@ -66,15 +66,15 @@ int main(int argc, char **argv)
 
 void sync()
 {
-    int b;
+    char b;
     bool sync = false;
     while(!sync)
     {
-        b = (int) encoder.read(1);
-        if(b = 0xff)
+        b = encoder.read(1);
+        if((int) b = 0xff)
         {
-            b = (int) encoder.read(1);
-            if(b = 0x0d)
+            b = encoder.read(1);
+            if((int)b = 0x0d)
             {
                 sync = true;
             }
