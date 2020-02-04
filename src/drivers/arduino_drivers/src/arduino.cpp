@@ -28,7 +28,7 @@ int main(int argc, char **argv)
     cout << "Ouverture de la connection" << endl;
     if (arduino.isOpen())
     {
-        cout << "OK" << endl;
+        cout << "Serial -> OK" << endl;
         usleep(100 * 1000);
         string data = arduino.readline();
         cout << "Arduino init status -> " << data << endl;
