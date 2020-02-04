@@ -83,6 +83,8 @@ void sync_encoders()
         }      
     }
     string data = encoder.read(15);
+
+    cout << "Sync ok" << endl;
     
 }
 
