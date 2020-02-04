@@ -94,7 +94,7 @@ void get_encoders_data()
     string data;
     string v = encoder.read(17);
     //cout << "encoders values : " << v << endl;
-    /*
+    
 
     int c1 = (int) v[0];
     int c2 = (int) v[1];
@@ -125,5 +125,5 @@ void get_encoders_data()
         voltRight = voltRight + (int)v[15];
     }
 
-    cout << "values -> " << posLeft << endl;*/
+    cout << "values -> " << posLeft << endl;
 }
