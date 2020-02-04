@@ -11,7 +11,7 @@
 
 using namespace std;
 
-#define RATE 2
+#define RATE 20
 
 string port = "/dev/ttyUSB0";
 int baudrate = 115200;
@@ -98,13 +98,13 @@ void get_encoders_data()
     string data;
     string v = encoder.read(17);
     //cout << "encoders values : ";
-
-    for(int i = 0; i < 17; i++)
+    /*
+    for(int i = 0; i < 12; i++)
     {
         cout << "v["<< i << "]=" << (int) v[i] << "."; 
     }
 
-    cout << endl;
+    cout << endl;*/
 
     
     int c1 = (int) v[0];
