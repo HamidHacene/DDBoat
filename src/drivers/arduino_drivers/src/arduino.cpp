@@ -22,7 +22,7 @@ int main(int argc, char **argv)
     // Initialisation du node : le troisième argument est son nom
     serial::Serial arduino(port, baudrate, serial::Timeout::simpleTimeout(1000));
     cout << "Is the serial port open?";
-    if (my_serial.isOpen())
+    if (arduino.isOpen())
     {
         cout << " Yes." << endl;
     }

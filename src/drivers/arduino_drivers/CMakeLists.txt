@@ -14,7 +14,6 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
-  serial
   tf
 )
 
@@ -120,7 +119,7 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/arduino_drivers_node.cpp)
 
-add_executable(arduino_driver src/arduino_driver.cpp)
+add_executable(arduino_driver src/arduino.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -137,7 +136,7 @@ add_executable(arduino_driver src/arduino_driver.cpp)
 #   ${catkin_LIBRARIES}
 # )
 
-target_link_libraries(arduino_driver ${catkin_LIBRARIES})
+target_link_libraries(arduino_driver libserial.so ${catkin_LIBRARIES})
 
 #############
 ## Install ##
@@ -166,7 +165,6 @@ target_link_libraries(arduino_driver ${catkin_LIBRARIES})
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
 # )
-
 ## Mark cpp header files for installation
 # install(DIRECTORY include/${PROJECT_NAME}/
 #   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
