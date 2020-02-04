@@ -133,9 +133,9 @@ void get_encoders_data(int &c_l, int &c_r)
         sensLeft = (int)v[6];
         sensRight = (int)v[7];
         posRight = (int)(v[8])*256;
-        posRight = posLeft + (int)v[9];
+        posRight = posRight + (int)v[9];
         posLeft = (int)(v[10])*256;
-        posLeft = posRight + (int)v[11];
+        posLeft = posLeft + (int)v[11];
         voltLeft = (int)(v[12])*256;
         voltLeft = voltLeft + (int)v[13];
         voltRight = (int)(v[14]) * 256;
