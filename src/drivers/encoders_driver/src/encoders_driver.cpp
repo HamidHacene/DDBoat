@@ -55,16 +55,9 @@ int main(int argc, char **argv)
 
     while (ros::ok())
     {
-        c_l = 0;
-        c_r = 0;
 
-        for(int i = 0; i < 10; i++)
-        {
-            get_encoders_data(c_l, c_r);
-        }
+        get_encoders_data(c_l, c_r);
 
-        c_l = c_l/(10*RATE);
-        c_r = c_r/(10*RATE);
 
         encoders_data.x = c_l;
         encoders_data.y = c_r;
@@ -149,6 +142,6 @@ void get_encoders_data(int &c_l, int &c_r)
         voltRight = voltRight + (int)v[15];
     }
 
-   c_l = c_l + posLeft;
-   c_r = c_r + posRight;
+   c_l = posLeft;
+   c_r = posRight;
 }
