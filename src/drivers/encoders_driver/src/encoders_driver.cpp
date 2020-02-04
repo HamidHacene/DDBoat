@@ -73,7 +73,7 @@ void sync_encoders()
     while(!sync)
     {
         b = encoder.read(1)[0];
-        if((int(b) = 0xff)
+        if(int(b) = 0xff)
         {
             b = encoder.read(1)[0];
             if(int(b) = 0x0d)
