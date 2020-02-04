@@ -18,7 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(PkgConfig)
 set(ENV{PKG_CONFIG_PATH}  "/usr/local/lib/pkgconfig:$ENV{PKG_CONFIG_PATH}")
 set(CMAKE_PREFIX_PATH "/usr/local/lib/pkgconfig:${CMAKE_SOURCE_DIR}")
-pkg_check_modules(LIBGPS REQUIRED libgps>=3.17)
+pkg_check_modules(LIBGPS REQUIRED libgps>=3.16)
 message("libgps version = " ${LIBGPS_VERSION})
 message("libgps include_dir = " ${LIBGPS_INCLUDEDIR})
 message("libgps lib_dir = " ${LIBGPS_LIBDIR})
