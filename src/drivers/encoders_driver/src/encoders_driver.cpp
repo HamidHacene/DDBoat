@@ -11,7 +11,7 @@
 
 using namespace std;
 
-#define RATE 20
+#define RATE 10
 
 string port = "/dev/ttyUSB0";
 int baudrate = 115200;
@@ -20,7 +20,7 @@ serial::Serial encoder(port, baudrate, serial::Timeout::simpleTimeout(1000));
 int cast_cmd(int cmd);
 void send_arduino_motor_cmd(int cmdl, int cmdr);
 //void get_encoders_data(geometry_msgs::Pose2D &data);
-void get_encoders_data();
+void get_encoders_data(int &c_l, int &c_r);
 void sync_encoders();
 
 // Attention à bien inclure chaque type de message !
@@ -36,11 +36,11 @@ int main(int argc, char **argv)
     }
     else
     {
-        cout << "** erreur encoder driver **" << endl;
+        cout << "** erreur encoders driver **" << endl;
         return 0;
     }
 
-    ros::init(argc, argv, "encoder_driver");
+    ros::init(argc, argv, "encoders_driver");
     ros::NodeHandle n;
     ros::Rate loop_rate(RATE);
 
@@ -51,11 +51,24 @@ int main(int argc, char **argv)
     geometry_msgs::Pose2D encoders_data;
 
     sync_encoders();
+    int c_l, c_r;
 
     while (ros::ok())
     {
+        c_l = 0;
+        c_r = 0;
 
-        get_encoders_data();
+        for(int i = 0; i < 10; i++)
+        {
+            get_encoders_data(c_l, c_r);
+        }
+
+        c_l = c_l/(10*RATE);
+        c_r = c_r/(10*RATE);
+
+        encoders_data.x = c_l;
+        encoders_data.y = c_r;
+        encoder_pub.publish(encoders_data);
         //encoder_pub.publish(encoder_data);
 
         ros::spinOnce();
@@ -92,7 +105,7 @@ void sync_encoders()
     
 }
 
-void get_encoders_data()
+void get_encoders_data(int &c_l, int &c_r)
 {
     bool sync = true;
     string data;
@@ -126,15 +139,16 @@ void get_encoders_data()
     {
         sensLeft = (int)v[6];
         sensRight = (int)v[7];
-        posLeft = (int)(v[8])*256;
-        posLeft = posLeft + (int)v[9];
-        posRight = (int)(v[10])*256;
-        posRight = posRight + (int)v[11];
+        posRight = (int)(v[8])*256;
+        posRight = posLeft + (int)v[9];
+        posLeft = (int)(v[10])*256;
+        posLeft = posRight + (int)v[11];
         voltLeft = (int)(v[12])*256;
         voltLeft = voltLeft + (int)v[13];
         voltRight = (int)(v[14]) * 256;
         voltRight = voltRight + (int)v[15];
     }
 
-    cout << "values -> " << posLeft << " / " << posRight << endl;
+   c_l = c_l + posLeft;
+   c_r = c_r + posRight;
 }
