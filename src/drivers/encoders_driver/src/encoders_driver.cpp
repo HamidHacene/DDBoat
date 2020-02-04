@@ -15,7 +15,7 @@ using namespace std;
 
 string port = "/dev/ttyUSB0";
 int baudrate = 115200;
-serial::Serial serial(port, baudrate, serial::Timeout::simpleTimeout(1000));
+serial::Serial encoder(port, baudrate, serial::Timeout::simpleTimeout(1000));
 
 int cast_cmd(int cmd);
 void send_arduino_motor_cmd(int cmdl, int cmdr);
@@ -28,7 +28,7 @@ int main(int argc, char **argv)
     // Initialisation du node : le troisième argument est son nom
 
     cout << "Ouverture de la connection" << endl;
-    if (serial.isOpen())
+    if (encoder.isOpen())
     {
         cout << "Serial -> OK" << endl;
         usleep(100 * 1000);
@@ -67,7 +67,7 @@ void get_encoders_data()
 {
     bool sync = true;
     string data;
-    string v = serial.read(17)
+    string v = encoder.read(17)
     cout << "encoders values : " << v << endl;
 
     /*
