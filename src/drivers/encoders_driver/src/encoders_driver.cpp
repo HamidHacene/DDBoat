@@ -101,7 +101,7 @@ void get_encoders_data()
 
     for(int i = 0; i < 17; i++)
     {
-        cout << (int) v[i] << "."; 
+        cout << "v["<< i << "]=" << (int) v[i] << "."; 
     }
 
     cout << endl;
