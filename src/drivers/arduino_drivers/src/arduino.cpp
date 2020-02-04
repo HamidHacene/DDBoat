@@ -16,7 +16,7 @@ string port = "/dev/ttyACM0";
 int baudrate = 115200;
 serial::Serial arduino(port, baudrate, serial::Timeout::simpleTimeout(1000));
 
-void sleep(unsigned long miliseconds);
+
 int cast_cmd(int cmd);
 void send_arduino_motor_cmd(int cmdl, int cmdr);
 
@@ -29,7 +29,7 @@ int main(int argc, char **argv)
     if (arduino.isOpen())
     {
         cout << "OK" << endl;
-        sleep(100);
+        usleep(100 * 1000);
         string data = arduino.readline();
         cout << "Arduino init status -> " << data << endl;
     }
@@ -58,10 +58,6 @@ int main(int argc, char **argv)
     return 0;
 }
 
-void sleep(unsigned long miliseconds)
-{
-    usleep(miliseconds * 1000);
-}
 
 int cast_cmd(int cmd)
 {
@@ -94,9 +90,9 @@ void get_arduino_status()
     int n = 0;
     while(boucle)
     {
-        sleep(10);
+        usleep(10 * 1000);
         string data = arduino.readline();
-        if(data.length >= 4 || n > 50)
+        if(data.length() >= 4 || n > 50)
         {
             boucle = false;
         }
