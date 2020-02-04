@@ -83,13 +83,13 @@ void get_encoders_data()
         int sensLeft = (int) v[6];
         int sensRight = (int) v[7];
         int posLeft = (int) v[8] << 8;
-        int posLeft += (int) v[9];
+        int posLeft = posLeft (int) v[9];
         int posRight = (int) v[10] << 8;
-        int posRight += (int) v[11];
+        int posRight = posRight + (int) v[11];
         int voltLeft = (int) v[12] << 8;
-        int voltLeft += (int) v[13];
+        int voltLeft = voltLeft + (int) v[13];
         int voltRight = (int) v[14] << 8;
-        int voltRight += (int) v[15];
+        int voltRight = voltRight + (int) v[15];
     }
 
     cout 
