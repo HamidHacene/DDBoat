@@ -74,11 +74,11 @@ void sync_encoders()
     while(!sync_test)
     {
         b = encoder.read(1)[0];
-        if(int(b) = 0xff)
+        if(int(b) == 0xff)
         {
             cout << "v[0] : " << (int) b;
             b = encoder.read(1)[0];
-            if(int(b) = 0x0d)
+            if(int(b) == 0x0d)
             {
                 sync_test = true;
             }
