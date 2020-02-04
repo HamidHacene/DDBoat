@@ -65,7 +65,9 @@ int main(int argc, char **argv)
         encoders_data.x = (c_l - old_l)/(t - t0);
         encoders_data.y = (c_r - old_r)/(t - t0);
         t = t0;
-        
+        old_l = c_l;
+        old_r = c_r;
+
         encoder_pub.publish(encoders_data);
         //encoder_pub.publish(encoder_data);
 
