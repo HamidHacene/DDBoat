@@ -68,7 +68,7 @@ void get_encoders_data()
     bool sync = true;
     string data;
     string v = encoder.read(17);
-    cout << "encoders values : " << v << endl;
+    //cout << "encoders values : " << v << endl;
 
     char c1 = v[0];
     char c2 = v[1];
@@ -89,13 +89,13 @@ void get_encoders_data()
     {
         sensLeft = (int)v[6];
         sensRight = (int)v[7];
-        posLeft = (int)v[8] << 8;
+        posLeft = (int)(v[8] << 8);
         posLeft = posLeft + (int)v[9];
-        posRight = (int)v[10] << 8;
+        posRight = (int)(v[10] << 8);
         posRight = posRight + (int)v[11];
-        voltLeft = (int)v[12] << 8;
+        voltLeft = (int)(v[12] << 8);
         voltLeft = voltLeft + (int)v[13];
-        voltRight = (int)v[14] << 8;
+        voltRight = (int)(v[14] << 8);
         voltRight = voltRight + (int)v[15];
     }
 
