@@ -88,10 +88,11 @@ void get_arduino_status()
     arduino.write("P;");
     bool boucle = true;
     int n = 0;
+    string data;
     while(boucle)
     {
         usleep(10 * 1000);
-        string data = arduino.readline();
+        data = arduino.readline();
         if(data.length() >= 4 || n > 50)
         {
             boucle = false;
