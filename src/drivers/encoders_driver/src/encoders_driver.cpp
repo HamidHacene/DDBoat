@@ -68,6 +68,7 @@ int main(int argc, char **argv)
 
 void sync_encoders()
 {
+    cout << "attemp to sync..." << endl;
     char b;
     bool sync_test = false;
     while(!sync_test)
@@ -75,11 +76,14 @@ void sync_encoders()
         b = encoder.read(1)[0];
         if(int(b) = 0xff)
         {
+            cout << "v[0] : " << (int) b;
             b = encoder.read(1)[0];
             if(int(b) = 0x0d)
             {
                 sync_test = true;
             }
+            cout << " | v[1] : " << (int) b << endl;
+            
         }      
     }
     string data = encoder.read(15);
