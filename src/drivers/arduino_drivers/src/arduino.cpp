@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#define RATE 10
+#define RATE 2
 
 string port = "/dev/ttyACM0";
 int baudrate = 115200;
@@ -29,6 +29,9 @@ int main(int argc, char **argv)
     if (arduino.isOpen())
     {
         cout << "OK" << endl;
+        sleep(100);
+        string data = arduino.readline();
+        cout << "Arduino init status -> " << data << endl;
     }
     else
     {
@@ -82,4 +85,22 @@ void send_arduino_motor_cmd(int cmdl, int cmdr)
     sprintf(cmd_str, "M %3.3d %3.3d;", cmdl, cmdr);
     arduino.write(cmd_str);
     cout << cmd_str << endl;
+}
+
+void get_arduino_status()
+{
+    arduino.write("P;");
+    bool boucle = true;
+    int n = 0;
+    while(boucle)
+    {
+        sleep(10);
+        string data = arduino.readline();
+        if(data.length >= 4 || n > 50)
+        {
+            boucle = false;
+        }
+        n++;
+    }
+    cout << "Arduino status -> " << data << endl;
 }

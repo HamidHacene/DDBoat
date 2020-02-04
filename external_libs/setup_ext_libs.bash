@@ -4,3 +4,5 @@ make test
 make docs
 make install
 cd ..
+
+sudo apt install libgps-dev
