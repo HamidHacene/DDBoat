@@ -21,6 +21,7 @@ int cast_cmd(int cmd);
 void send_arduino_motor_cmd(int cmdl, int cmdr);
 //void get_encoders_data(geometry_msgs::Pose2D &data);
 void get_encoders_data();
+void sync();
 
 // Attention à bien inclure chaque type de message !
 int main(int argc, char **argv)
@@ -63,6 +64,26 @@ int main(int argc, char **argv)
     return 0;
 }
 
+void sync()
+{
+    int b;
+    bool sync = false;
+    while(!sync)
+    {
+        b = (int) encoder.read(1);
+        if(b = 0xff)
+        {
+            b = (int) encoder.read(1);
+            if(b = 0x0d)
+            {
+                sync = true;
+            }
+        }      
+    }
+    string data = encoder.read(15);
+    
+}
+
 void get_encoders_data()
 {
     bool sync = true;
@@ -70,8 +91,8 @@ void get_encoders_data()
     string v = encoder.read(17);
     //cout << "encoders values : " << v << endl;
 
-    char c1 = v[0];
-    char c2 = v[1];
+    int c1 = (int) v[0];
+    int c2 = (int) v[1];
 
     int sensLeft;
     int sensRight;
@@ -80,16 +101,24 @@ void get_encoders_data()
     int voltLeft;
     int voltRight;
 
-    sensLeft = (int)v[6];
-    sensRight = (int)v[7];
-    posLeft = (int)(v[8] << 8);
-    posLeft = posLeft + (int)v[9];
-    posRight = (int)(v[10] << 8);
-    posRight = posRight + (int)v[11];
-    voltLeft = (int)(v[12] << 8);
-    voltLeft = voltLeft + (int)v[13];
-    voltRight = (int)(v[14] << 8);
-    voltRight = voltRight + (int)v[15];
+    if (c1 != 0xff || c2 != 0x0d)
+    {
+        cout << "not sync..." << endl;
+        sync();
+    }
+    else
+    {
+        sensLeft = (int)v[6];
+        sensRight = (int)v[7];
+        posLeft = (int)(v[8] << 8);
+        posLeft = posLeft + (int)v[9];
+        posRight = (int)(v[10] << 8);
+        posRight = posRight + (int)v[11];
+        voltLeft = (int)(v[12] << 8);
+        voltLeft = voltLeft + (int)v[13];
+        voltRight = (int)(v[14] << 8);
+        voltRight = voltRight + (int)v[15];
+    }
 
     cout << "values -> " << posLeft << endl;
 }
