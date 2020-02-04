@@ -139,7 +139,7 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/filters_node.cpp)
 add_executable(kalman src/kalman.cpp)
-
+add_executable(cap_filter src/cap_filter.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -156,6 +156,10 @@ add_executable(kalman src/kalman.cpp)
 #   ${catkin_LIBRARIES}
 # )
 target_link_libraries(kalman
+${catkin_LIBRARIES}
+)
+
+target_link_libraries(cap_filter
 ${catkin_LIBRARIES}
 )
 #############
