@@ -92,6 +92,6 @@ void get_encoders_data()
         voltRight = voltRight + (int) v[15];
     }
 
-    cout 
+    cout << "values -> " << posLeft << endl; 
     
 }
