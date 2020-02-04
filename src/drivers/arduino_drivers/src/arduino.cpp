@@ -10,13 +10,13 @@
 
 using namespace std;
 
-#define RATE 10
+#define RATE 2
 
 string port = "/dev/ttyACM0";
 int baudrate = 115200;
 serial::Serial arduino(port, baudrate, serial::Timeout::simpleTimeout(1000));
 
-void sleep(unsigned long miliseconds);
+
 int cast_cmd(int cmd);
 void send_arduino_motor_cmd(int cmdl, int cmdr);
 
@@ -28,7 +28,10 @@ int main(int argc, char **argv)
     cout << "Ouverture de la connection" << endl;
     if (arduino.isOpen())
     {
-        cout << "OK" << endl;
+        cout << "Serial -> OK" << endl;
+        usleep(100 * 1000);
+        string data = arduino.readline();
+        cout << "Arduino init status -> " << data << endl;
     }
     else
     {
@@ -55,10 +58,6 @@ int main(int argc, char **argv)
     return 0;
 }
 
-void sleep(unsigned long miliseconds)
-{
-    usleep(miliseconds * 1000);
-}
 
 int cast_cmd(int cmd)
 {
@@ -82,4 +81,23 @@ void send_arduino_motor_cmd(int cmdl, int cmdr)
     sprintf(cmd_str, "M %3.3d %3.3d;", cmdl, cmdr);
     arduino.write(cmd_str);
     cout << cmd_str << endl;
+}
+
+void get_arduino_status()
+{
+    arduino.write("P;");
+    bool boucle = true;
+    int n = 0;
+    string data;
+    while(boucle)
+    {
+        usleep(10 * 1000);
+        data = arduino.readline();
+        if(data.length() >= 4 || n > 50)
+        {
+            boucle = false;
+        }
+        n++;
+    }
+    cout << "Arduino status -> " << data << endl;
 }
