@@ -70,14 +70,16 @@ int main(int argc, char *argv[])
 
         std::vector<double> poseLamb = {north - north0, east - east0, track};
         msg_pose.data.insert(msg_pose.data.end(), poseLamb.begin(), poseLamb.end());
-
+        /*message : data(0) = north;
+                    data(1) = east; 
+            */
         pose_pub.publish(msg_pose);
       }
       new_data = false;
     }
     loop_rate.sleep();
   }
-  pj_free(pj_latlong);
+  pj_free(pj_latlong);  
   pj_free(pj_lambert);
   return 0;
 }
