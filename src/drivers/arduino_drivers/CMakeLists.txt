@@ -137,7 +137,7 @@ add_executable(motor_stop src/motor_stop.cpp)
 
 target_link_libraries(arduino_driver libserial.so ${catkin_LIBRARIES})
 target_link_libraries(pid_motor ${catkin_LIBRARIES})
-target_link_libraries(motor_test ${catkin_LIBRARIES})
+target_link_libraries(motor_test libserial.so ${catkin_LIBRARIES})
 target_link_libraries(motor_stop libserial.so ${catkin_LIBRARIES})
 
 #############
