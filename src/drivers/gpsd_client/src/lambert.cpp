@@ -53,9 +53,6 @@ int main(int argc, char *argv[])
   ros::Subscriber navFix_sub = n.subscribe("fix", 1, navFix_callback);
   ros::Publisher pose_pub = n.advertise<std_msgs::Float64MultiArray>("poseRaw", 1);
 
-  std_msgs::Float64MultiArray msg_pose;
-  msg_pose.data.clear();
-
   ROS_INFO("[FUSION lambert] Start Ok");
   ros::Rate loop_rate(frequency);
   while (ros::ok())
@@ -65,6 +62,8 @@ int main(int argc, char *argv[])
     {
       if(longitude != 0. && latitude != 0. && data_valid)
       {
+        std_msgs::Float64MultiArray msg_pose;
+        msg_pose.data.clear();
         double east = longitude*M_PI/180.0; // Longitude
         double north = latitude*M_PI/180.0; // Latitude
         pj_transform(pj_latlong, pj_lambert, 1, 1, &east, &north, nullptr);
