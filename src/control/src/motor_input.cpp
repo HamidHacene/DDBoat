@@ -31,8 +31,8 @@ double vitesse_gauche;
 
 void conversion(){
     double K = 1;
-    v[0] = K*(u[1] - u[0]/2);
-    v[1] = K*(u[1] + u[0]/2);
+    v[0] = u[0]*(255/8) + (255/2);
+    v[1] = u[1]*(255/8) + (255/2);
     
 }
 
