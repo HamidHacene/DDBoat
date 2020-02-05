@@ -19,9 +19,9 @@ serial::Serial encoder(port, baudrate, serial::Timeout::simpleTimeout(1000));
 
 
 int cast_cmd(int cmd);
-void send_arduino_motor_cmd(int cmdl, int cmdr);
+
 //void get_encoders_data(geometry_msgs::Pose2D &data);
-void get_encoders_data(int &c_l, int &c_r);
+void get_encoders_data(double &c_l, double &c_r);
 void sync_encoders();
 
 // Attention à bien inclure chaque type de message !
@@ -52,26 +52,24 @@ int main(int argc, char **argv)
     geometry_msgs::Pose2D encoders_data;
 
     sync_encoders();
-    int c_l, c_r, old_r, old_l;
-    double t;
-    double t0 = ros::Time::now().toSec();
+    double c_l, c_r, old_r, old_l;
+
 
     while (ros::ok())
     {
         
         get_encoders_data(c_l, c_r);
 
-        t = ros::Time::now().toSec();
-        encoders_data.x = (c_l - old_l)/(t - t0);
-        encoders_data.y = (c_r - old_r)/(t - t0);
-        t = t0;
+        encoders_data.x = (c_l - old_l)/(RATE*8);
+        encoders_data.y = (c_r - old_r)/(RATE*8);
+
         old_l = c_l;
         old_r = c_r;
 
         encoder_pub.publish(encoders_data);
         //encoder_pub.publish(encoder_data);
 
-        ros::spinOnce();
+        //ros::spinOnce();
         // Pause
         loop_rate.sleep();
     }
@@ -103,7 +101,7 @@ void sync_encoders()
     cout << "Sync ok" << endl;
 }
 
-void get_encoders_data(int &c_l, int &c_r)
+void get_encoders_data(double &c_l, double &c_r)
 {
     bool sync = true;
     string data;
