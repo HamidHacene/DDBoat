@@ -30,14 +30,26 @@ double t;
 
 void cible(){
 
-    //TO DO
-    double m= 1;
-    Xcible[0] =  m*sin(t) ;
-    Xcible[1] = m*sin(2*t);
-    Vcible[0] = m*cos(t);
-    Vcible[1] = m*2*cos(2*t);
-    Acible[0] = -m*sin(t);
-    Acible[1] = -4*m*sin(2*t);
+    //POINT FIXE
+/*
+
+     Xcible[0] =  10;
+    Xcible[1] = 10;
+    Vcible[0] = 0;
+    Vcible[1] = 0;
+    Acible[0] =0;
+    Acible[1] = 0;
+
+*/
+
+    //POINT MOBILE 
+    double m= 5;
+    double s = 5;
+    Xcible[0] =  m*sin(t/s) ;
+    Xcible[1] = m*sin(2*t/s);
+    Vcible[0] = m*cos(t/s)/s;
+    Vcible[1] = m*2*cos(2*t/s)/s;
+ 
 
 }
 

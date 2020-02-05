@@ -71,7 +71,7 @@ void controller(){
     Eigen::Vector2d dY = {v*ct, v*st};
     Eigen::Vector2d a = {1, 2};
     Eigen::Vector2d b = {2, 3};
-    Eigen::Vector2d z = z = 2*(Xcible - Y) + 2*(Vcible - dY);
+    Eigen::Vector2d z = z = 4*(Xcible - Y) + 4*(Vcible - dY);
     // z = 2*(w - Y) + 2*(dw - dY);
     //z = kp*(w - Y) + kd*(dw - dY);
     u = A.fullPivLu().solve(z - B);

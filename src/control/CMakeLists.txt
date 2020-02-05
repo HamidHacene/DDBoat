@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   tf
+  arduino_drivers
 )
 
 ## System dependencies are found with CMake's conventions
@@ -57,6 +58,12 @@ find_package(catkin REQUIRED COMPONENTS
 #   Message2.msg
 # )
 
+add_message_files(
+  FILES
+  Motor_dual.msg
+)
+
+
 ## Generate services in the 'srv' folder
 # add_service_files(
 #   FILES
@@ -72,10 +79,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
+generate_messages(
 #   DEPENDENCIES
 #   geometry_msgs#   std_msgs
-# )
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -141,6 +148,7 @@ include_directories(
 add_executable(control src/control.cpp)
 add_executable(target src/target.cpp)
 add_executable(simulator src/simulator.cpp)
+add_executable(motor_input src/motor_input.cpp)
 
 
 ## Rename C++ executable without prefix
@@ -166,6 +174,11 @@ target_link_libraries(target
 target_link_libraries(simulator
 	${catkin_LIBRARIES}
 )
+
+target_link_libraries(motor_input
+	${catkin_LIBRARIES}
+)
+
 
 #############
 ## Install ##

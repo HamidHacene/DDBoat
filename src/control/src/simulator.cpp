@@ -17,7 +17,7 @@
 #include "eigen3/Eigen/Dense"
 #include "std_msgs/Float64MultiArray.h"
 
-
+#include "fliters/GPose.h"
 
 
 Eigen::Vector2d u ={0.0, 0.0};
