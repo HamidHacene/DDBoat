@@ -35,12 +35,16 @@ int main(int argc, char **argv)
 
     cout << "-> Lancement du test moteur" << endl;
 
+    double t;
+
     while (ros::ok())
     {
+
+        t = ros::Time::now().toSec();
         
-        motor_cmd.left = ;
-        motor_cmd.right = ;
-        
+        motor_cmd.left = 50 + 100*cos(t/10);
+        motor_cmd.right = motor_cmd.left;
+
         pub.publish(motor_cmd);
 
         // Pause
@@ -48,55 +52,4 @@ int main(int argc, char **argv)
     }
 
     return 0;
-}
-
-
-int cast_cmd(int cmd)
-{
-    if (cmd > 255)
-    {
-        return 255;
-    }
-    else if (cmd < 0)
-    {
-        return 0;
-    }
-}
-
-
-void send_arduino_motor_cmd(int cmdl, int cmdr)
-{
-    cmdl = cast_cmd(cmdl);
-    cmdr = cast_cmd(cmdr);
-
-    char cmd_str [50];
-    sprintf(cmd_str, "M %3.3d %3.3d;", cmdl, cmdr);
-    arduino.write(cmd_str);
-    cout << cmd_str << endl;
-}
-
-void get_arduino_status()
-{
-    arduino.write("P;");
-    bool boucle = true;
-    int n = 0;
-    string data;
-    while(boucle)
-    {
-        usleep(10 * 1000);
-        data = arduino.readline();
-        if(data.length() >= 4 || n > 50)
-        {
-            boucle = false;
-        }
-        n++;
-    }
-    cout << "Arduino status -> " << data << endl;
-}
-
-void commandeCallback(const arduino_drivers::Motor_dual::ConstPtr &msg)
-{
-    //cout << "commande incoming ! " << endl;
-    cmd_l = msg->left;
-    cmd_r = msg->right;
 }
