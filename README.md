@@ -2,7 +2,7 @@
 Coco : colin.baumgard@ensta-bretagne.org  
 Ludosky : ludovic.diguet@ensta-bretagne.org  
 Rhamid : hamid.hacene@ensta-bretagne.org  
-  
+Liza : antonin.lize@ensta-bretagne.org
  
 # Lancer ROS  
 catkin_make  
