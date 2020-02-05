@@ -7,5 +7,5 @@
     <node name="cap_filter_node" pkg="filters" type="cap_filter"/>
     <node name="arduino_driver" pkg="arduino_drivers" type="arduino_driver"/>
     <node name="encoders_driver" pkg="encoders_driver" type="encoders_driver"/>
-    <node name="pid_motor" pkg="arduino_drivers" type="pid"/>
+    <node name="pid" pkg="arduino_drivers" type="pid_motor"/>
 </launch>
