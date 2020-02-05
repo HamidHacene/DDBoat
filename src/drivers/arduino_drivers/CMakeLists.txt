@@ -118,6 +118,7 @@ include_directories(
 add_executable(arduino_driver src/arduino.cpp)
 add_executable(motor_test src/motor_test.cpp)
 add_executable(pid_motor src/pid.cpp)
+add_executable(motor_stop src/motor_stop.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -137,6 +138,7 @@ add_executable(pid_motor src/pid.cpp)
 target_link_libraries(arduino_driver libserial.so ${catkin_LIBRARIES})
 target_link_libraries(pid_motor ${catkin_LIBRARIES})
 target_link_libraries(motor_test ${catkin_LIBRARIES})
+target_link_libraries(motor_stop libserial.so ${catkin_LIBRARIES})
 
 #############
 ## Install ##
