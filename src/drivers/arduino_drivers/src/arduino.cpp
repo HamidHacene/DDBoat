@@ -5,14 +5,12 @@
 
 #include "serial/serial.h"
 #include "ros/ros.h"
-#include "std_msgs/String.h"
-#include "std_msgs/Float64.h"
 
 #include "arduino_drivers/Motor_dual.h"
 
 using namespace std;
 
-#define RATE 10
+#define RATE 5
 
 string port = "/dev/ttyACM0";
 int baudrate = 115200;

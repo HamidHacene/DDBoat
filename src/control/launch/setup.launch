@@ -1,9 +1,0 @@
-<launch>
-	<node name="simulator" pkg="control" type="simulator" />
-	<node name="control" pkg="control" type="control" />
-	<node name="target" pkg="control" type="target" />
-	<node name="motor_input" pkg="control" type="motor_input" />
-
-
-</launch>
-

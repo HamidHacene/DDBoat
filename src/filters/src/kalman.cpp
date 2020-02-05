@@ -7,6 +7,8 @@
 #include "std_msgs/Float64.h"
 #include "std_msgs/Float64MultiArray.h"
 
+# define M_PI           3.14159265358979323846  
+
 using namespace std;
 using namespace Eigen;
 
@@ -45,11 +47,13 @@ void lambertCallback(const std_msgs::Float64MultiArray::ConstPtr& msg)
 {
     ykal(0) = msg->data[1];  //east
     ykal(1) = msg->data[0];  //north
+    // ykal = (x, y, thetaBoussole)
 }
 
 void capCallback(const std_msgs::Float64::ConstPtr& msg)
 {
-    ykal(2) = msg->data;
+    double thetaB = msg->data;
+    ykal(2) = -thetaB - 90;
 }
 
 int main(int argc, char **argv)
@@ -96,8 +100,14 @@ int main(int argc, char **argv)
         // ------------------------------------------------------------------------
         std_msgs::Float64MultiArray msg;
         msg.data.clear();
-        //north, east, heading, vitesse
-        std::vector<double> Xhat = {x0(0), x0(1), x0(3), x0(2)};
+        //east, north, cap, vitesse
+        std::vector<double> Xhat = {x0(0), x0(1), x0(2)*M_PI/180. , x0(3)};
+        /*message publié
+            data(0) = east --> x
+            data(1) = north --> y
+            date(2) = thetaRadian
+            data(3) = vitesse m/s
+        */
         msg.data.insert(msg.data.end(), Xhat.begin(), Xhat.end());
 
         estimated_state_pub.publish(msg);

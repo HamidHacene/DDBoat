@@ -1,12 +1,9 @@
-#include <string>
 #include <iostream>
 #include <cstdio>
 #include <unistd.h>
 
 
 #include "ros/ros.h"
-#include "std_msgs/String.h"
-#include "std_msgs/Float64.h"
 
 #include "arduino_drivers/Motor_dual.h"
 
@@ -40,11 +37,20 @@ void encodersCallback(const arduino_drivers::Motor_dual::ConstPtr &msg)
 
 void PID(double enc_left, double enc_right, double cmd_left, double cmd_right)
 {
-    double error_right = cmd_right - enc_right;
     double error_left = cmd_left - enc_left;
+    double error_right = cmd_right - enc_right;
+    
+    sum_error_left = sum_error_left + error_left / RATE;
+    sum_error_right = sum_error_right + error_right / (RATE);
 
-    sum_error_left = sum_error_left + error_left;
-    sum_error_right = sum_error_right + error_right;
+    if(abs(sum_error_left) > 200)
+    {
+        sum_error_left = 0;
+    }
+    if(abs(sum_error_right) > 200)
+    {
+        sum_error_right = 0;
+    }
 
     value_cmd_left = value_cmd_left + Kp * error_left + Kd * (error_left - previous_error_left) / RATE + Ki * sum_error_left;
     value_cmd_right = value_cmd_right + Kp * error_right + Kd * (error_right - previous_error_right) / RATE + Ki * sum_error_right;
@@ -56,9 +62,9 @@ void PID(double enc_left, double enc_right, double cmd_left, double cmd_right)
 int main(int argc, char **argv)
 {
 
-    Kp = 0.5;
-    Ki = 0;
-    Kd = 0;
+    Kp = 0.2;
+    Ki = 0.3;
+    Kd = 0.1;
 
     ros::init(argc, argv, "pid_motor");
     ros::NodeHandle n;

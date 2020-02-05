@@ -1,23 +1,9 @@
 #include <cmath>
 #include <vector>
 #include "ros/ros.h"
-#include "std_msgs/Float64.h"
-
 #include "std_msgs/Float64MultiArray.h"
-
-#include "geometry_msgs/PoseStamped.h"
-#include "geometry_msgs/Pose.h"
-#include "geometry_msgs/Point.h"
-
-
-#include "geometry_msgs/Quaternion.h"
-#include "geometry_msgs/Twist.h"
 #include "geometry_msgs/Vector3.h"
-#include "visualization_msgs/Marker.h"
-#include "geometry_msgs/PointStamped.h"
 #include "eigen3/Eigen/Dense"
-
-#include "tf/tf.h"
 
 # define M_PI           3.14159265358979323846  
 
@@ -92,7 +78,7 @@ int main(int argc, char **argv){
     ros::NodeHandle xcible;
     ros::NodeHandle vcible;
     ros::NodeHandle acible;
-    ros::Subscriber sub1 = xbateau.subscribe("X_bateau", 1000, get_X_bateau);
+    ros::Subscriber sub1 = xbateau.subscribe("poseCorrected", 1000, get_X_bateau);
     ros::Subscriber sub2 = xcible.subscribe("position_cible", 1000, get_position_cible);
     ros::Subscriber sub3 = vcible.subscribe("vitesse_cible", 1000, get_vitesse_cible);
     ros::Subscriber sub4 = vcible.subscribe("acceleration_cible", 1000, get_acceleration_cible);
