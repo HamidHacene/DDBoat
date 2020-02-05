@@ -49,7 +49,7 @@ int main(int argc, char **argv)
 {
 
     Kp = 0.6;
-    Ki = 0.05;
+    Ki = 0;
     Kd = 0;
 
     ros::init(argc, argv, "pid_motor");
