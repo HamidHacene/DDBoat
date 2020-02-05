@@ -48,7 +48,7 @@ void PID(double enc_left, double enc_right, double cmd_left, double cmd_right)
 int main(int argc, char **argv)
 {
 
-    Kp = 0.6;
+    Kp = 0.1;
     Ki = 0;
     Kd = 0;
 
