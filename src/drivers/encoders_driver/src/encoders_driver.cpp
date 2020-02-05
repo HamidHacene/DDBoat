@@ -9,7 +9,7 @@
 #include "std_msgs/Float64.h"
 #include "geometry_msgs/Pose2D.h"
 
-#include "arduino_drivers/Rps_dual.h"
+#include "arduino_drivers/Motor_dual.h"
 
 using namespace std;
 
@@ -18,7 +18,7 @@ using namespace std;
 string port = "/dev/ttyUSB0";
 int baudrate = 115200;
 serial::Serial encoder(port, baudrate, serial::Timeout::simpleTimeout(1000));
-
+double max_motor_speed = 240;
 
 int cast_cmd(int cmd);
 
@@ -47,11 +47,11 @@ int main(int argc, char **argv)
     ros::NodeHandle n;
     ros::Rate loop_rate(RATE);
 
-    ros::Publisher encoder_pub = n.advertise<arduino_drivers::Rps_dual>("encoders", 0);
+    ros::Publisher encoder_pub = n.advertise<arduino_drivers::Motor_dual>("encoders", 0);
 
     cout << "-> Lancement du driver Encoder" << endl;
 
-    arduino_drivers::Rps_dual encoders_data;
+    arduino_drivers::Motor_dual encoders_data;
 
     sync_encoders();
     double c_l, c_r, old_r, old_l;
@@ -62,8 +62,8 @@ int main(int argc, char **argv)
         
         get_encoders_data(c_l, c_r);
 
-        encoders_data.x = RATE*(c_l - old_l)/(8);
-        encoders_data.y = RATE*(c_r - old_r)/(8);
+        encoders_data.left = 255/max_motor_speed * RATE*(c_l - old_l)/(8);
+        encoders_data.right = 255/max_motor_speed * RATE*(c_r - old_r)/(8);
 
         old_l = c_l;
         old_r = c_r;

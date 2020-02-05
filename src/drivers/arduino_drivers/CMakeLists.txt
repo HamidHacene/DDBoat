@@ -33,7 +33,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
-  Rps_dual.msg
+  Motor_dual.msg
 )
 
 ## Generate services in the 'srv' folder
