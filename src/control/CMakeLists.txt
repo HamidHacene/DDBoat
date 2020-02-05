@@ -147,7 +147,7 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/control_node.cpp)
 add_executable(control src/control.cpp)
 add_executable(target src/target.cpp)
-add_executable(simulator src/simulator.cpp)
+#add_executable(simulator src/simulator.cpp)
 add_executable(motor_input src/motor_input.cpp)
 
 
@@ -171,9 +171,9 @@ target_link_libraries(target
 	${catkin_LIBRARIES}
 )
 
-target_link_libraries(simulator
-	${catkin_LIBRARIES}
-)
+#target_link_libraries(simulator
+#	${catkin_LIBRARIES}
+#)
 
 target_link_libraries(motor_input
 	${catkin_LIBRARIES}
