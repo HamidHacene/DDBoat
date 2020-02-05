@@ -50,7 +50,7 @@ int main(int argc, char **argv)
 
     Kp = 0.3;
     Ki = 0.01;
-    Kd = 0;
+    Kd = 0.1;
 
     ros::init(argc, argv, "pid_motor");
     ros::NodeHandle n;
