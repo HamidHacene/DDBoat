@@ -1,24 +1,9 @@
 #include <cmath>
 #include <vector>
 #include "ros/ros.h"
-#include "std_msgs/Float64.h"
-
 #include "std_msgs/Float64MultiArray.h"
-
-#include "geometry_msgs/PoseStamped.h"
-#include "geometry_msgs/Pose.h"
-#include "geometry_msgs/Point.h"
-
-
-#include "geometry_msgs/Quaternion.h"
-#include "geometry_msgs/Twist.h"
-#include "geometry_msgs/Vector3.h"
-#include "visualization_msgs/Marker.h"
-#include "geometry_msgs/PointStamped.h"
 #include "eigen3/Eigen/Dense"
 #include "arduino_drivers/Motor_dual.h"
-
-#include "tf/tf.h"
 
 # define M_PI           3.14159265358979323846 
 
