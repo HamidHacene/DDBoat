@@ -146,7 +146,7 @@ void get_encoders_data(double &c_l, double &c_r)
         voltRight = voltRight + (int)v[15];
     }
 
-    c_l = posLeft;
-    c_r = posRight;
+    c_l = abs(posLeft);
+    c_r = abs(posRight);
 
 }
