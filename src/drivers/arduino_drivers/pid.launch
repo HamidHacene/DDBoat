@@ -1,0 +1,5 @@
+<node name="config_pid" pkg="pid" type="pid_motor" >
+    <param name="Kp" value="5.0" />
+    <param name="Ki" value="0.0" />
+    <param name="Kd" value="0.1" />
+</node>

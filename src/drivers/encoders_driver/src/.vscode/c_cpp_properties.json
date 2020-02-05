@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "/home/antonin/workspaceRosTP/devel/include/**",
+                "/opt/ros/melodic/include/**",
+                "/home/antonin/workspaceRosTP/src/tp1/include/**",
+                "/home/antonin/workspaceRosTP/src/tp2/include/**",
+                "/usr/include/**"
+            ],
+            "name": "ROS",
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}
