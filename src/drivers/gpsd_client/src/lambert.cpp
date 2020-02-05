@@ -3,7 +3,7 @@
 
 #include <ros/ros.h>
 #include <gpsd_client/GPSFix.h>
-#include <gpsd_client/GnssPose.h>
+#include "std_msgs/Float64MultiArray.h"
 #include <cmath>
 
 #include <proj_api.h>
@@ -12,8 +12,10 @@ using namespace std;
 double latitude, longitude, track;
 bool new_data = false;
 bool data_valid = false;
-double east0 = 253575.276988;
-double north0 = 6805716.83588;
+//double east0 = 253575.276988;
+//double north0 = 6805716.83588;
+double east0 = 253495.324541;
+double north0 = 6805738.35646;
 
 void navFix_callback(const gpsd_client::GPSFix::ConstPtr& msg){
   latitude =  msg->latitude;
@@ -48,9 +50,9 @@ int main(int argc, char *argv[])
 
   // Topics
   ros::Subscriber navFix_sub = n.subscribe("fix", 1, navFix_callback);
-  ros::Publisher pose_pub = n.advertise<gpsd_client::GnssPose>("poseRaw", 1);
+  ros::Publisher pose_pub = n.advertise<std_msgs::Float64MultiArray>("poseRaw", 1);
 
-  gpsd_client::GnssPose msg_pose;
+  std_msgs::Float64MultiArray msg_pose;
 
   ROS_INFO("[FUSION lambert] Start Ok");
   ros::Rate loop_rate(frequency);
@@ -64,10 +66,9 @@ int main(int argc, char *argv[])
         double east = longitude*M_PI/180.0; // Longitude
         double north = latitude*M_PI/180.0; // Latitude
         pj_transform(pj_latlong, pj_lambert, 1, 1, &east, &north, nullptr);
-        msg_pose.east = east - east0;
-        msg_pose.north = north - north0;
-        msg_pose.heading = track;
-
+        msg_pose.data[0] = north - north0;
+        msg_pose.data[1] = east - east0;
+        msg_pose.data[2] = track;
         pose_pub.publish(msg_pose);
       }
       new_data = false;
