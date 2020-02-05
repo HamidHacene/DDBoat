@@ -57,8 +57,8 @@ void PID(double enc_left, double enc_right, double cmd_left, double cmd_right)
 int main(int argc, char **argv)
 {
 
-    Kp = 0.2;
-    Ki = 0.4;
+    Kp = 0.5;
+    Ki = 0;
     Kd = 0.2;
 
     ros::init(argc, argv, "pid_motor");
