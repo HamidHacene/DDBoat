@@ -1,4 +1,5 @@
 #include <cmath>
+#include <vector>
 #include "ros/ros.h"
 #include "tf/tf.h"
 #include "geometry_msgs/Vector3.h"
@@ -27,7 +28,8 @@ void kalman_correct(Vector4d&xup, Matrix4d& Gup, Vector4d& x0, Matrix4d& Gx0, Ve
     xup = x0 + K * ytilde;
 }
 
-void kalman(Vector4d& x0, Matrix4d& Gx0, Vector4d& u, Matrix4d& Galpha, Matrix4d& A, Vector3d& y, Matrix3d& Gbeta, MatrixXd& C){
+void kalman(Vector4d& x0, Matrix4d& Gx0, Vector4d& u, Matrix4d& Galpha, Matrix4d& A, Vector3d& y, Matrix3d& Gbeta, MatrixXd& C)
+{
     Vector4d xup;
     Matrix4d Gup;
     kalman_correct(xup, Gup, x0, Gx0, y, Gbeta, C);
@@ -36,7 +38,7 @@ void kalman(Vector4d& x0, Matrix4d& Gx0, Vector4d& u, Matrix4d& Galpha, Matrix4d
 
 void commandCallback(const std_msgs::Float64MultiArray::ConstPtr& msg)
 {
-    ukal << 0, 0, msg->data[0], msg->data[1];
+    ukal << 0., 0., msg->data[0], msg->data[1];
 }
 
 void lambertCallback(const std_msgs::Float64MultiArray::ConstPtr& msg)
@@ -80,7 +82,8 @@ int main(int argc, char **argv)
     ros::Subscriber cap_sub = n.subscribe("capFiltered", 1000, capCallback);
     ros::Rate loop_rate(10.);
 
-    while (ros::ok()){
+    while (ros::ok())
+    {
         // Acquisition de la commande et du GPS
         ros::spinOnce();
 
@@ -92,10 +95,11 @@ int main(int argc, char **argv)
         // Création et publication du message contenant la position estimée
         // ------------------------------------------------------------------------
         std_msgs::Float64MultiArray msg;
-        msg.data[1] = x0(0);
-        msg.data[0] = x0(1);
-        msg.data[3] = x0(3); //x, y, theta, v
-        msg.data[2] = x0(2);
+        msg.data.clear();
+        //north, east, heading, vitesse
+        std::vector<double> Xhat = {x0(0), x0(1), x0(3), x0(2)};
+        msg.data.insert(msg.data.end(), Xhat.begin(), Xhat.end());
+
         estimated_state_pub.publish(msg);
         // -----------------------------------------------------
         loop_rate.sleep();
