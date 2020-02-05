@@ -38,6 +38,15 @@ void PID(double enc_left, double enc_right, double cmd_left, double cmd_right)
     sum_error_left = sum_error_left + error_left / RATE;
     sum_error_right = sum_error_right + error_right / (RATE);
 
+    if(abs(sum_error_left) > 200)
+    {
+        sum_error_left = 0;
+    }
+    if(abs(sum_error_right) > 200)
+    {
+        sum_error_right = 0;
+    }
+
     value_cmd_left = value_cmd_left + Kp * error_left + Kd * (error_left - previous_error_left) / RATE + Ki * sum_error_left;
     value_cmd_right = value_cmd_right + Kp * error_right + Kd * (error_right - previous_error_right) / RATE + Ki * sum_error_right;
 
@@ -48,9 +57,9 @@ void PID(double enc_left, double enc_right, double cmd_left, double cmd_right)
 int main(int argc, char **argv)
 {
 
-    Kp = 0.3;
-    Ki = 0.05;
-    Kd = 0.15;
+    Kp = 0.2;
+    Ki = 0.1;
+    Kd = 0.2;
 
     ros::init(argc, argv, "pid_motor");
     ros::NodeHandle n;
