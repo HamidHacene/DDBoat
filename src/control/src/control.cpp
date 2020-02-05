@@ -33,7 +33,7 @@ Eigen::Vector2d u = {1,1};
 
 
 void get_X_bateau(const std_msgs::Float64MultiArray msg){
-    Xbateau[0] =    msg.data[0]; //x
+    Xbateau[0] =    msg.data[0] ; //x
     Xbateau[1] =     msg.data[1]; //y
     Xbateau[2] =    msg.data[2]; //theta =  - thetaboussole 
     Xbateau[3] =    msg.data[3];  //v
@@ -56,8 +56,8 @@ void get_acceleration_cible(const geometry_msgs::Vector3 msg4){
 }
 
 void controller(){
-    double x = Xbateau[0]; 
-    double y = Xbateau[1];
+    double x = Xbateau[1]; 
+    double y = Xbateau[0];
     double theta = Xbateau[2];
     double v = Xbateau[3];
 
@@ -69,7 +69,7 @@ void controller(){
          st + v*ct, st - v*ct; 
 
     Eigen::Vector2d B = {-std::abs(v)*v*ct, -std::abs(v)*v*st};
-    Eigen::Vector2d Y = {x, y};
+    Eigen::Vector2d Y = {y, x};
     Eigen::Vector2d dY = {v*ct, v*st};
     Eigen::Vector2d a = {1, 2};
     Eigen::Vector2d b = {2, 3};
