@@ -10,7 +10,6 @@ add_compile_options(-std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  sensor_msgs
   message_generation
 )
 
@@ -33,7 +32,6 @@ message("PKG_CONFIG_PATH = " $ENV{PKG_CONFIG_PATH})
 add_message_files(
   FILES
     GPSFix.msg
-    GnssPose.msg
 )
 
 generate_messages(DEPENDENCIES 
@@ -69,6 +67,7 @@ add_executable(lambert_node
 )
 
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(lambert_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${LIBGPS_LIBRARIES})
 target_link_libraries(lambert_node
   proj
