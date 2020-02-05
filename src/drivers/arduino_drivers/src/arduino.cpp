@@ -5,8 +5,6 @@
 
 #include "serial/serial.h"
 #include "ros/ros.h"
-#include "std_msgs/String.h"
-#include "std_msgs/Float64.h"
 
 #include "arduino_drivers/Motor_dual.h"
 
