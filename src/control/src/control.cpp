@@ -3,6 +3,7 @@
 #include "ros/ros.h"
 #include "std_msgs/Float64.h"
 
+#include "std_msgs/Float64MultiArray.h"
 
 #include "geometry_msgs/PoseStamped.h"
 #include "geometry_msgs/Pose.h"
@@ -14,23 +15,26 @@
 #include "geometry_msgs/Vector3.h"
 #include "visualization_msgs/Marker.h"
 #include "geometry_msgs/PointStamped.h"
+#include "eigen3/Eigen/Dense"
 
 #include "tf/tf.h"
 
 # define M_PI           3.14159265358979323846  
 
 
-double Xbateau[3];  //vecteur d'état du bateau (x,y,theta)
-double Vbateau[3]; //derivée du vecteur d'étéan
-double u;  //vecteur de controle
-double Xcible[2]; //coordonnes de la cible
-double Vcible[2]; //vitesse de la cible 
-double e;
+Eigen::Vector4d Xbateau = {0.0, 0.0, 0.0, 0.0};
+Eigen::Vector2d Xcible = {5, 5}; 
+Eigen::Vector2d Vcible = {0, 0};
+Eigen::Vector2d Acible = {0, 0}; 
 
-void get_X_bateau(const geometry_msgs::PoseStamped msg1){
-    Xbateau[0] =  msg1.pose.position.x;
-    Xbateau[1] =  msg1.pose.position.y;
-    Xbateau[2] =  tf::getYaw(msg1.pose.orientation);
+Eigen::Vector2d u = {1,1};
+
+
+void get_X_bateau(const std_msgs::Float64MultiArray msg1){
+    Xbateau[0] =  msg1.data[0]; //x
+    Xbateau[1] =   msg1.data[1]; //y
+    Xbateau[2] =  msg1.data[2]; //theta
+    Xbateau[3] =  msg1.data[3];  //v
 
     }
 
@@ -43,19 +47,39 @@ void get_vitesse_cible(const geometry_msgs::Vector3 msg3){
     Vcible[0] =  msg3.x;
     Vcible[1] =  msg3.y;
 }
-double controller(){
-    //double xv = Xc[0]  - Xb[0];
-    //double yv = Xc[1]  - Xb[1];
-    //double thetav = atan2(yv,xv);
-    //e = thetav - Xb[2];
 
-    //if (abs(e) > M_PI/4){
-    //    return (-M_PI/10);}
-    //else {
-    //    return(0.4 *e );
-    return(64.0);
-    }
+void get_acceleration_cible(const geometry_msgs::Vector3 msg4){
+    Acible[0] =  msg4.x;
+    Acible[1] =  msg4.y;
+}
 
+void controller(){
+    double x = Xbateau[0]; 
+    double y = Xbateau[1];
+    double theta = Xbateau[2];
+    double v = Xbateau[3];
+
+    double st = std::sin(theta);
+    double ct = std::cos(theta);
+
+    Eigen::Matrix2d A;
+    A << ct - v*st, ct + v*st,
+         st + v*ct, st - v*ct; 
+
+    Eigen::Vector2d B = {-std::abs(v)*v*ct, -std::abs(v)*v*st};
+    Eigen::Vector2d Y = {x, y};
+    Eigen::Vector2d dY = {v*ct, v*st};
+    Eigen::Vector2d a = {1, 2};
+    Eigen::Vector2d b = {2, 3};
+    Eigen::Vector2d z = z = 2*(Xcible - Y) + 2*(Vcible - dY);
+    // z = 2*(w - Y) + 2*(dw - dY);
+    //z = kp*(w - Y) + kd*(dw - dY);
+    u = A.fullPivLu().solve(z - B);
+}
+    
+
+
+   
 int main(int argc, char **argv){
 
     // INITIALISATION
@@ -65,26 +89,37 @@ int main(int argc, char **argv){
     ros::NodeHandle xbateau;
     ros::NodeHandle xcible;
     ros::NodeHandle vcible;
+    ros::NodeHandle acible;
     ros::Subscriber sub1 = xbateau.subscribe("X_bateau", 1000, get_X_bateau);
     ros::Subscriber sub2 = xcible.subscribe("position_cible", 1000, get_position_cible);
     ros::Subscriber sub3 = vcible.subscribe("vitesse_cible", 1000, get_vitesse_cible);
+    ros::Subscriber sub4 = vcible.subscribe("acceleration_cible", 1000, get_acceleration_cible);
 
     //DECLARATION DE PUBLISHERS
     ros::NodeHandle thetap;
-    ros::Publisher pub = thetap.advertise<std_msgs::Float64>("theta_prime", 1000);
+    ros::NodeHandle v;
+
+    ros::Publisher pub1 = thetap.advertise<std_msgs::Float64>("theta_prime", 1000);
+    ros::Publisher pub2 = v.advertise<std_msgs::Float64>("vitesse", 1000);
 
     
     ros::Rate loop_rate(25);
     while (ros::ok()){
         ros::spinOnce();
-
+        controller();
         std_msgs::Float64 theta_prime;
+        std_msgs::Float64 vitesse;
+
+
         geometry_msgs::PointStamped cible;
 
-        theta_prime.data = controller();
+        theta_prime.data = u[0];
+        vitesse.data = u[1];
 
         // PUBLICATION
-        pub.publish(theta_prime);
+        pub1.publish(theta_prime);
+        pub2.publish(vitesse);
+
         loop_rate.sleep();
 
     }
