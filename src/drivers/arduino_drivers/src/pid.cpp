@@ -52,9 +52,9 @@ int main(int argc, char **argv)
     ros::NodeHandle node_priv("~");
     ros::Rate loop_rate(rate);
 
-    ros::Publisher command_corrected = n.advertise<arduino_drivers::Motor_dual>("command_LR", 1000);
+    ros::Publisher command_corrected = n.advertise<arduino_drivers::Motor_dual>("controlled_cmd_motor", 1000);
     ros::Subscriber values_command = n.subscribe("motor_cmd", 1000, commandCallback);
-    ros::Subscriber values_encoders = n.subscribe("controlled_cmd_motor", 1000, encodersCallback);
+    ros::Subscriber values_encoders = n.subscribe("encoders", 1000, encodersCallback);
 
     while (ros::ok())
     {
