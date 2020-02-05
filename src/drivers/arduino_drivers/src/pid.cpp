@@ -60,8 +60,8 @@ int main(int argc, char **argv)
     
 
     ros::Publisher command_corrected = n.advertise<arduino_drivers::Motor_dual>("controlled_cmd_motor", 1000);
-    //ros::Subscriber values_command = n.subscribe("motor_cmd", 1000, commandCallback);
-    //ros::Subscriber values_encoders = n.subscribe("encoders", 1000, encodersCallback);
+    ros::Subscriber values_command = n.subscribe("motor_cmd", 1000, commandCallback);
+    ros::Subscriber values_encoders = n.subscribe("encoders", 1000, encodersCallback);
 
     ros::Rate loop_rate(RATE);
 
@@ -71,13 +71,11 @@ int main(int argc, char **argv)
     {
         ros::spinOnce();
 
-        //PID(value_encoder_left, value_encoder_right, value_cmd_left, value_cmd_right);
+        PID(value_encoder_left, value_encoder_right, value_cmd_left, value_cmd_right);
 
-        //cmd_corrected.left = value_cmd_left;   //commande moteur gauche après pid
-        //cmd_corrected.right = value_cmd_right; //commande moteur droite après pid
+        cmd_corrected.left = value_cmd_left;   //commande moteur gauche après pid
+        cmd_corrected.right = value_cmd_right; //commande moteur droite après pid
 
-        cmd_corrected.left = 100;   //commande moteur gauche après pid
-        cmd_corrected.right = 100;
 
         command_corrected.publish(cmd_corrected);
 
