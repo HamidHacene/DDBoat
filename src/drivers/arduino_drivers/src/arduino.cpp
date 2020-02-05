@@ -48,7 +48,6 @@ int main(int argc, char **argv)
 
     ros::Subscriber sub = n.subscribe("controlled_cmd_motor", 1000, commandeCallback);
 
-    arduino_drivers::Motor_dual motor_cmd;
 
     cout << "-> Lancement du driver Arduino" << endl;
 
@@ -56,7 +55,7 @@ int main(int argc, char **argv)
     {
         ros::spinOnce();
 
-        send_arduino_motor_cmd(motor_cmd.left, motor_cmd.right);
+        send_arduino_motor_cmd(cmd_l, cmd_r);
 
         // Pause
         loop_rate.sleep();
