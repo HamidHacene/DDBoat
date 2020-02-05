@@ -8,17 +8,20 @@
 #include "std_msgs/String.h"
 #include "std_msgs/Float64.h"
 
+#include "arduino_drivers/Motor_dual.h"
+
 using namespace std;
 
-#define RATE 2
+#define RATE 10
 
 string port = "/dev/ttyACM0";
 int baudrate = 115200;
 serial::Serial arduino(port, baudrate, serial::Timeout::simpleTimeout(1000));
-
+double cmd_l, cmd_r;
 
 int cast_cmd(int cmd);
 void send_arduino_motor_cmd(int cmdl, int cmdr);
+void commandeCallback(const arduino_drivers::Motor_dual::ConstPtr &msg);
 
 // Attention à bien inclure chaque type de message !
 int main(int argc, char **argv)
@@ -43,14 +46,18 @@ int main(int argc, char **argv)
     ros::NodeHandle n;
     ros::Rate loop_rate(RATE);
 
+    ros::Subscriber sub = n.subscribe("controlled_cmd_motor", 1000, commandeCallback);
+
+    arduino_drivers::Motor_dual motor_cmd;
+
     cout << "-> Lancement du driver Arduino" << endl;
 
     while (ros::ok())
     {
-
-        send_arduino_motor_cmd(100, 100);
-
         ros::spinOnce();
+
+        send_arduino_motor_cmd(motor_cmd.left, motor_cmd.right);
+
         // Pause
         loop_rate.sleep();
     }
@@ -100,4 +107,11 @@ void get_arduino_status()
         n++;
     }
     cout << "Arduino status -> " << data << endl;
+}
+
+void commandeCallback(const arduino_drivers::Motor_dual::ConstPtr &msg)
+{
+    //cout << "commande incoming ! " << endl;
+    cmd_l = msg->left;
+    cmd_r = msg->right;
 }
