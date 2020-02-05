@@ -17,7 +17,6 @@
 #include "eigen3/Eigen/Dense"
 #include "std_msgs/Float64MultiArray.h"
 
-#include "fliters/GPose.h"
 
 
 Eigen::Vector2d u ={0.0, 0.0};
@@ -32,13 +31,11 @@ void intergration_euler(){
 
 }
 
-void get_theta(const std_msgs::Float64 msg){
-    u[0] =  msg.data;
+void get_u(const std_msgs::Float64MultiArray msg){
+    u[0] =  msg.data[0];
+    u[1] =  msg.data[1];
     }
 
-void get_v(const std_msgs::Float64 msg){
-    u[1] =  msg.data;
-    }
 
 
 int main(int argc, char **argv){
@@ -46,8 +43,7 @@ int main(int argc, char **argv){
 
 
 
-    ros::NodeHandle vitesse_angulaire;;
-    ros::NodeHandle vitesse;
+    ros::NodeHandle commande;;
     ros::NodeHandle xbateau;
     ros::NodeHandle xbateau_visualisation;
 
@@ -55,8 +51,7 @@ int main(int argc, char **argv){
     ros::Publisher pub_visualisation = xbateau_visualisation.advertise<geometry_msgs::PoseStamped>("X_bateau_visu", 1000);
 
 
-    ros::Subscriber sub1 = vitesse_angulaire.subscribe("theta_prime", 1000, get_theta);
-    ros::Subscriber sub2 = vitesse.subscribe("vitesse", 1000, get_v);
+    ros::Subscriber sub = commande.subscribe("command", 1000, get_u);
 
 
 
@@ -72,6 +67,7 @@ int main(int argc, char **argv){
 
         ros::spinOnce();
         intergration_euler();
+
         std_msgs::Float64MultiArray msg;
         geometry_msgs::PoseStamped vect;
         

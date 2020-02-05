@@ -30,11 +30,13 @@ Eigen::Vector2d Acible = {0, 0};
 Eigen::Vector2d u = {1,1};
 
 
-void get_X_bateau(const std_msgs::Float64MultiArray msg1){
-    Xbateau[0] =  msg1.data[0]; //x
-    Xbateau[1] =   msg1.data[1]; //y
-    Xbateau[2] =  msg1.data[2]; //theta
-    Xbateau[3] =  msg1.data[3];  //v
+
+
+void get_X_bateau(const std_msgs::Float64MultiArray msg){
+    Xbateau[0] =    msg.data[0]; //x
+    Xbateau[1] =     msg.data[1]; //y
+    Xbateau[2] =    msg.data[2]; //theta =  - thetaboussole 
+    Xbateau[3] =    msg.data[3];  //v
 
     }
 
@@ -96,30 +98,25 @@ int main(int argc, char **argv){
     ros::Subscriber sub4 = vcible.subscribe("acceleration_cible", 1000, get_acceleration_cible);
 
     //DECLARATION DE PUBLISHERS
-    ros::NodeHandle thetap;
-    ros::NodeHandle v;
+    
+    ros::NodeHandle commande;
+    ros::Publisher pub = commande.advertise<std_msgs::Float64MultiArray>("command", 1000);
 
-    ros::Publisher pub1 = thetap.advertise<std_msgs::Float64>("theta_prime", 1000);
-    ros::Publisher pub2 = v.advertise<std_msgs::Float64>("vitesse", 1000);
 
     
     ros::Rate loop_rate(25);
     while (ros::ok()){
+        
         ros::spinOnce();
         controller();
-        std_msgs::Float64 theta_prime;
-        std_msgs::Float64 vitesse;
-
-
-        geometry_msgs::PointStamped cible;
-
-        theta_prime.data = u[0];
-        vitesse.data = u[1];
+        std_msgs::Float64MultiArray com;
+         com.data.clear();
+        std::vector<double> X_control = {u[0], u[1]};
+        com.data.insert(com.data.end(), X_control.begin(), X_control.end());
 
         // PUBLICATION
-        pub1.publish(theta_prime);
-        pub2.publish(vitesse);
-
+        pub.publish(com);
+        
         loop_rate.sleep();
 
     }

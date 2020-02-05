@@ -58,10 +58,10 @@ find_package(catkin REQUIRED COMPONENTS
 #   Message2.msg
 # )
 
-add_message_files(
-  FILES
-  Motor_dual.msg
-)
+##add_message_files(
+#  FILES
+#  Motor_dual.msg
+#)
 
 
 ## Generate services in the 'srv' folder
@@ -148,7 +148,7 @@ include_directories(
 add_executable(control src/control.cpp)
 add_executable(target src/target.cpp)
 add_executable(simulator src/simulator.cpp)
-add_executable(motor_input src/motor_input.cpp)
+#add_executable(motor_input src/motor_input.cpp)
 
 
 ## Rename C++ executable without prefix
@@ -175,9 +175,9 @@ target_link_libraries(simulator
 	${catkin_LIBRARIES}
 )
 
-target_link_libraries(motor_input
-	${catkin_LIBRARIES}
-)
+#target_link_libraries(motor_input
+#	${catkin_LIBRARIES}
+#)
 
 
 #############
