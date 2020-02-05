@@ -55,6 +55,12 @@ generate_messages(DEPENDENCIES
   std_msgs
 )
 
+catkin_package(
+  CATKIN_DEPENDS 
+    message_runtime
+    ${DEPS}
+)
+
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
 ################################################
