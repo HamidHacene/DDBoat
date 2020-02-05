@@ -32,9 +32,9 @@ void encodersCallback(const arduino_drivers::Motor_dual::ConstPtr &msg)
 
 void PID(double enc_left, double enc_right, double cmd_left, double cmd_right)
 {
-    double error_right = cmd_right - enc_right;
     double error_left = cmd_left - enc_left;
-
+    double error_right = cmd_right - enc_right;
+    
     sum_error_left = sum_error_left + error_left / RATE;
     sum_error_right = sum_error_right + error_right / (RATE);
 
@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 {
 
     Kp = 0.2;
-    Ki = 0.1;
+    Ki = 0.4;
     Kd = 0.2;
 
     ros::init(argc, argv, "pid_motor");
