@@ -60,8 +60,8 @@ int main(int argc, char **argv)
         
         get_encoders_data(c_l, c_r);
 
-        encoders_data.x = (c_l - old_l)/(RATE*8);
-        encoders_data.y = (c_r - old_r)/(RATE*8);
+        encoders_data.x = RATE*(c_l - old_l)/(8);
+        encoders_data.y = RATE*(c_r - old_r)/(8);
 
         old_l = c_l;
         old_r = c_r;
