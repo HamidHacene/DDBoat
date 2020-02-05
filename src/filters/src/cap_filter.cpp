@@ -31,13 +31,13 @@ int main(int argc, char *argv[]){
 
     // Parameters
     ros::NodeHandle n_private("~");
-    const double frequency = n_private.param<double>("frequency", 0.2);
+    const double frequency = n_private.param<double>("frequency", 2000);
 
     filter_median_size = n_private.param<int>("filter_median_size", 5);
     filter_mean_width = n_private.param<int>("filter_mean_width", 3);
 
     // Subscriber
-    ros::Subscriber cap_sub = n.subscribe("/drivers/cap_boat/capRaw", 10, cap_callback);
+    ros::Subscriber cap_sub = n.subscribe("/capRaw", 10, cap_callback);
 
     // Publisher
     ros::Publisher cap_pub = n.advertise<std_msgs::Float64>("capFiltered", 1);
