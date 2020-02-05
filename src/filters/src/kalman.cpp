@@ -48,7 +48,7 @@ int main(int argc, char **argv)
 {
     //Initialisation Kalman
     // ------------------------------------------
-    Vector4d x0 = {253571.951544, 6805722.31735, 0., 0.1}; // doit être initialisé correctement dans le launch !
+    Vector4d x0 = {0.0, 0.0, 0.0, 0.1}; // doit être initialisé correctement dans le launch !
     Matrix4d Gx0 = 10 * MatrixXd::Identity(4, 4);
     Matrix4d Galpha = MatrixXd::Zero(4, 4);
     MatrixXd C(2, 4);
@@ -62,8 +62,8 @@ int main(int argc, char **argv)
     const double dt = 0.1;
     ros::init(argc, argv, "kalman");
     ros::NodeHandle n;
-    n.param<double>("pos_x", x0(0), 253571.951544);
-    n.param<double>("pos_y", x0(1), 6805722.31735);
+    n.param<double>("pos_x", x0(0), 0.0);
+    n.param<double>("pos_y", x0(1), 0.0);
     n.param<double>("yaw", x0(2), 0.0);
     n.param<double>("yaw", x0(3), 0.1);
 
@@ -88,7 +88,7 @@ int main(int argc, char **argv)
         filters::GPose msg;
         msg.east = x0(0);
         msg.north = x0(1);
-        msg.vitesse = x0(3); //
+        msg.vitesse = x0(3); //x, y, theta, v
         msg.heading = x0(2);
         estimated_state_pub.publish(msg);
         // -----------------------------------------------------

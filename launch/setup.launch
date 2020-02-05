@@ -1,7 +1,0 @@
-<launch>
-	<node name="simulator" pkg="ddboat" type="simulator_node" />
-	<node name="control" pkg="ddboat" type="controller_node" />
-	<node name="target" pkg="ddboat" type="controller_node" />
-
-</launch>
-
