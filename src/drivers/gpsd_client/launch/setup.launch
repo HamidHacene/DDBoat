@@ -1,0 +1,8 @@
+<launch>
+    <!-- <node name="arduino_driver" pkg="arduino_driver" type="arduino_driver" /> -->
+    <node name="gpsd_client" pkg="gpsd_client" type="gpsd_client" />
+    <node name="lambert_node" pkg="gpsd_client" type="lambert_node" />
+    <node name="kalman" pkg="filters" type="kalman" />
+    <node name="cap_node" pkg="cap_boat" type="cap_talker"/>    
+    <node name="cap_filter_node" pkg="filters" type="cap_filter"/>    
+</launch>
