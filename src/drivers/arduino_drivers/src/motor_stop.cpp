@@ -4,11 +4,8 @@
 #include <unistd.h>
 
 #include "serial/serial.h"
-#include "ros/ros.h"
-#include "std_msgs/String.h"
-#include "std_msgs/Float64.h"
 
-#include "arduino_drivers/Motor_dual.h"
+
 
 using namespace std;
 
@@ -21,7 +18,6 @@ double cmd_l, cmd_r;
 
 int cast_cmd(int cmd);
 void send_arduino_motor_cmd(int cmdl, int cmdr);
-void commandeCallback(const arduino_drivers::Motor_dual::ConstPtr &msg);
 
 // Attention à bien inclure chaque type de message !
 int main(int argc, char **argv)
@@ -42,24 +38,8 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    ros::init(argc, argv, "arduino_driver");
-    ros::NodeHandle n;
-    ros::Rate loop_rate(RATE);
 
-    ros::Subscriber sub = n.subscribe("controlled_cmd_motor", 1000, commandeCallback);
-
-
-    cout << "-> Lancement du driver Arduino" << endl;
-
-    while (ros::ok())
-    {
-        ros::spinOnce();
-
-        send_arduino_motor_cmd(cmd_l, cmd_r);
-
-        // Pause
-        loop_rate.sleep();
-    }
+    send_arduino_motor_cmd(0, 0);
 
     return 0;
 }
@@ -89,28 +69,3 @@ void send_arduino_motor_cmd(int cmdl, int cmdr)
     cout << cmd_str << endl;
 }
 
-void get_arduino_status()
-{
-    arduino.write("P;");
-    bool boucle = true;
-    int n = 0;
-    string data;
-    while(boucle)
-    {
-        usleep(10 * 1000);
-        data = arduino.readline();
-        if(data.length() >= 4 || n > 50)
-        {
-            boucle = false;
-        }
-        n++;
-    }
-    cout << "Arduino status -> " << data << endl;
-}
-
-void commandeCallback(const arduino_drivers::Motor_dual::ConstPtr &msg)
-{
-    //cout << "commande incoming ! " << endl;
-    cmd_l = msg->left;
-    cmd_r = msg->right;
-}

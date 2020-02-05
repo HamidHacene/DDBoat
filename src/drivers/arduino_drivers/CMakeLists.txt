@@ -31,11 +31,10 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+  FILES
+  Motor_dual.msg
+)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -52,10 +51,7 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   geometry_msgs#   stds_msgs
-# )
+generate_messages()
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -120,6 +116,9 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/arduino_drivers_node.cpp)
 
 add_executable(arduino_driver src/arduino.cpp)
+add_executable(motor_test src/motor_test.cpp)
+add_executable(pid_motor src/pid.cpp)
+add_executable(motor_stop src/motor_stop.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -137,6 +136,9 @@ add_executable(arduino_driver src/arduino.cpp)
 # )
 
 target_link_libraries(arduino_driver libserial.so ${catkin_LIBRARIES})
+target_link_libraries(pid_motor ${catkin_LIBRARIES})
+target_link_libraries(motor_test ${catkin_LIBRARIES})
+target_link_libraries(motor_stop libserial.so ${catkin_LIBRARIES})
 
 #############
 ## Install ##
