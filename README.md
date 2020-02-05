@@ -1,17 +1,24 @@
-# ddboat
-Coco  
-Ludosky  
-Rhamid  
+# ddboat_authors  
+Coco : colin.baumgard@ensta-bretagne.org  
+Ludosky : ludovic.diguet@ensta-bretagne.org  
+Rhamid : hamid.hacene@ensta-bretagne.org  
   
-# gpsd_client  
-Noeud qui permet de lire les trames NMEA.  
-Il publie un message sut le topic /Fix.  
-## pour le lancer :  
-sudo service gpsd stop  
-gpsd -D S -N -n /dev/ttyUSB0  
-rosrun gpsd_client gpsd_client
+# Lancer ROS  
+catkin_make  
+roslaunch gpsd_client setup.launch  
 
-<<<<<<< HEAD
-=======
+# Pour le GPS  
+modifier le fichier /etc/default/gpsd de la façon suivante :  
+--------------------------------------------------------------------------  
+-# Default settings for the gpsd init script and the hotplug wrapper.  
+-# Start the gpsd daemon automatically at boot time  
+START_DAEMON="true"  
+-# Use USB hotplugging to add new USB devices automatically to the daemon  
+USBAUTO="false"  
+-# Devices gpsd should collect to at boot time.  
+-# They need to be read/writeable, either by user gpsd or the group dialout.    
+DEVICES="/dev/ttyS0"  
+-# Other options you want to pass to gpsd  
+GPSD_OPTIONS=""  
+--------------------------------------------------------------------------  
 
->>>>>>> c1a13662067270b8e212fcde577ed74d7549bbec
