@@ -55,7 +55,7 @@ int main(int argc, char **argv)
     Ki = 0;
     Kd = 0;
 
-    ros::init(argc, argv, "pid_encoders");
+    ros::init(argc, argv, "pid_motor");
     ros::NodeHandle n;
     
 
