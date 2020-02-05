@@ -35,8 +35,8 @@ void PID(double enc_left, double enc_right, double cmd_left, double cmd_right)
     double error_right = cmd_right - enc_right;
     double error_left = cmd_left - enc_left;
 
-    sum_error_left = sum_error_left + error_left;
-    sum_error_right = sum_error_right + error_right;
+    sum_error_left = sum_error_left + error_left / RATE;
+    sum_error_right = sum_error_right + error_right / RATE;
 
     value_cmd_left = value_cmd_left + Kp * error_left + Kd * (error_left - previous_error_left) / RATE + Ki * sum_error_left;
     value_cmd_right = value_cmd_right + Kp * error_right + Kd * (error_right - previous_error_right) / RATE + Ki * sum_error_right;
