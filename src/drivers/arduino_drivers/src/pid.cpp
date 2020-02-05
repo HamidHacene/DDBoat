@@ -51,7 +51,7 @@ void PID(double enc_left, double enc_right, double cmd_left, double cmd_right)
 int main(int argc, char **argv)
 {
 
-    Kp = 0;
+    Kp = 0.1;
     Ki = 0;
     Kd = 0;
 
@@ -71,7 +71,7 @@ int main(int argc, char **argv)
     {
         ros::spinOnce();
 
-        //PID(value_encoder_left, value_encoder_right, value_cmd_left, value_cmd_right);
+        PID(value_encoder_left, value_encoder_right, value_cmd_left, value_cmd_right);
 
         cmd_corrected.left = value_cmd_left;   //commande moteur gauche après pid
         cmd_corrected.right = value_cmd_right; //commande moteur droite après pid
