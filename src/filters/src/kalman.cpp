@@ -55,6 +55,10 @@ void capCallback(const std_msgs::Float64::ConstPtr &msg)
 {
     double thetaB = msg->data;
     heading = (90 - thetaB)*M_PI/180.;
+    if(heading < -M_PI)
+    {
+        heading = 2*M_PI + heading;
+    }
 }
 
 int main(int argc, char **argv)
