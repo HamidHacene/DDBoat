@@ -59,7 +59,7 @@ void controller(){
     y = Xbateau[1];
     theta = Xbateau[2];
     v = Xbateau[3];
-    thetav = atan2(Xcible[1] - y,Xcible[0] - x);
+    thetav = atan2(Xcible[0] - x, Xcible[1] - y);
     e = thetav - theta;
     dcible = sqrt(pow(Xcible[1] - y,2)  + pow(Xcible[0] - x,2));
 
