@@ -12,7 +12,7 @@
 
 using namespace std;
 
-#define RATE 10
+#define RATE 25
 
 double cmd_l, cmd_r;
 
@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 
         t = ros::Time::now().toSec();
         
-        motor_cmd.left = 40;
+        motor_cmd.left = 100;
         motor_cmd.right = motor_cmd.left;
 
         pub.publish(motor_cmd);
