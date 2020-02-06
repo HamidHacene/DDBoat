@@ -19,6 +19,8 @@ Eigen::Vector2d Vcible = {0, 0};
 Eigen::Vector2d Acible = {0, 0}; 
 
 Eigen::Vector2d u = {1,1};
+double e;
+
 
 
 
@@ -26,7 +28,7 @@ Eigen::Vector2d u = {1,1};
 void get_X_bateau(const std_msgs::Float64MultiArray msg){
     Xbateau[0] =    msg.data[0]; //x
     Xbateau[1] =     msg.data[1]; //y
-    Xbateau[2] =    msg.data[2]; //theta =  - thetaboussole 
+    Xbateau[2] =    msg.data[2]; //theta =  - thetaboussole -90
     Xbateau[3] =    msg.data[3];  //v
 
     }
@@ -55,6 +57,12 @@ void controller(){
     double st = std::sin(theta);
     double ct = std::cos(theta);
 
+
+  
+    double thetav = atan2(Xcible[1] - Xbateau[1],Xcible[0] - Xbateau[0]);
+    e = thetav - Xbateau[2];
+
+    /*
     Eigen::Matrix2d A;
     A << ct - v*st, ct + v*st,
          st + v*ct, st - v*ct; 
@@ -68,6 +76,7 @@ void controller(){
     // z = 2*(w - Y) + 2*(dw - dY);
     //z = kp*(w - Y) + kd*(dw - dY);
     u = A.fullPivLu().solve(z - B);
+    */
 }
     
 
@@ -106,7 +115,7 @@ int main(int argc, char **argv){
         geometry_msgs::PoseStamped pose;
         std_msgs::Float64MultiArray com;
          com.data.clear();
-        std::vector<double> X_control = {u[0], u[1]};
+        std::vector<double> X_control = {e,1.0};
         com.data.insert(com.data.end(), X_control.begin(), X_control.end());
 
         pose.pose.position.x = Xbateau[0];
