@@ -15,6 +15,6 @@
     <node name="motor_input" pkg="control" type="motor_input" />
     <node name="pid" pkg="arduino_drivers" type="pid_motor"/>
 
-    <node name="mission_record" pkg="rosbag" type="record" args="record -a"/>
+    <node name="mission_record" pkg="rosbag" type="record" output="screen" args="--all"/>
 
 </launch>
