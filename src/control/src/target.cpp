@@ -18,7 +18,7 @@ double t;
 void cible(){
 
     //POINT FIXE
-/*
+
 
      Xcible[0] =  10;
     Xcible[1] = 10;
@@ -27,7 +27,7 @@ void cible(){
     Acible[0] =0;
     Acible[1] = 0;
 
-*/
+/*
 
     //POINT MOBILE 
     double m= 5;
@@ -37,7 +37,7 @@ void cible(){
     Vcible[0] = m*cos(t/s)/s;
     Vcible[1] = m*2*cos(2*t/s)/s;
  
-
+*/
 }
 
 
