@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 
         t = ros::Time::now().toSec();
         
-        motor_cmd.left = 100;
+        motor_cmd.left = 50 + 150*cos(10*t);
         motor_cmd.right = motor_cmd.left;
 
         pub.publish(motor_cmd);
