@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#define RATE 5
+#define RATE 15
 
 string port = "/dev/ttyACM0";
 int baudrate = 115200;

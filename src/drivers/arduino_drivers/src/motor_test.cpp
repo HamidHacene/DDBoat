@@ -12,7 +12,7 @@
 
 using namespace std;
 
-#define RATE 25
+#define RATE 15
 
 double cmd_l, cmd_r;
 
