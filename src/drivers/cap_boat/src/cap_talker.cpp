@@ -4,7 +4,7 @@
 #include "math.h"
 #include "std_srvs/Trigger.h"
 #include "string"
-#include <string>
+
 #include <iostream>
 #include <iostream>
 #include <iomanip>
@@ -21,7 +21,7 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "cap_node");
     ros::NodeHandle n;
     ros::Publisher chatter_pub = n.advertise<std_msgs::Float64>("capRaw", 1000);
-    ros::Rate loop_rate(15.);
+    ros::Rate loop_rate(2500);
     while (ros::ok())
     {
         std_msgs::Float64 msg;
