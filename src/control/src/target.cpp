@@ -20,7 +20,7 @@ void cible(){
     //POINT FIXE
 
 
-     Xcible[0] =  10;
+     Xcible[0] =  - 10;
     Xcible[1] = 10;
     Vcible[0] = 0;
     Vcible[1] = 0;
