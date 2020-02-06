@@ -84,7 +84,7 @@ int main(int argc, char **argv)
     ros::Subscriber com_sub = n.subscribe("command", 1000, commandCallback);
     ros::Subscriber lamb_sub = n.subscribe("poseRaw", 1000, lambertCallback);
     ros::Subscriber cap_sub = n.subscribe("capFiltered", 1000, capCallback);
-    ros::Rate loop_rate(10.);
+    ros::Rate loop_rate(15.);
 
     while (ros::ok())
     {

@@ -41,10 +41,10 @@ int main(int argc, char **argv){
     //DECLARATION DE PUBLISHERS
 
     ros::NodeHandle input;
-    ros::Publisher pub = input.advertise<arduino_drivers::Motor_dual>("motor_cmd_2", 1000);
+    ros::Publisher pub = input.advertise<arduino_drivers::Motor_dual>("motor_cmd", 1000);
 
  
-    ros::Rate loop_rate(25);
+    ros::Rate loop_rate(10);
     while (ros::ok()){
 
         ros::spinOnce();

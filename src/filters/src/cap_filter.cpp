@@ -31,7 +31,7 @@ int main(int argc, char *argv[]){
 
     // Parameters
     ros::NodeHandle n_private("~");
-    const double frequency = n_private.param<double>("frequency", 2000);
+    const double frequency = n_private.param<double>("frequency", 15.);
 
     filter_median_size = n_private.param<int>("filter_median_size", 5);
     filter_mean_width = n_private.param<int>("filter_mean_width", 3);

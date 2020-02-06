@@ -13,7 +13,7 @@
 
 using namespace std;
 
-#define RATE 25
+#define RATE 15
 
 string port = "/dev/ttyUSB0";
 int baudrate = 115200;
