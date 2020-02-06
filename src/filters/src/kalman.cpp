@@ -15,6 +15,8 @@ using namespace Eigen;
 Vector2d ykal;
 double speed;
 double heading;
+double east;
+double north;
 
 void kalman_predict(Vector2d &x1, Matrix2d &Gx1, Vector2d &xup, Matrix2d &Gup, Vector2d &u, Matrix2d &Galpha, Matrix2d &A)
 {
@@ -41,8 +43,10 @@ void kalman(Vector2d &x0, Matrix2d &Gx0, Vector2d &u, Matrix2d &Galpha, Matrix2d
 
 void lambertCallback(const std_msgs::Float64MultiArray::ConstPtr &msg)
 {
-    ykal(0) = msg->data[1]; //east
-    ykal(1) = msg->data[0]; //north
+    //ykal(0) = msg->data[1]; //east
+    //ykal(1) = msg->data[0]; //north
+    east = msg->data[1];
+    north = msg->data[0];
     speed = msg->data[2];
     // ykal = (x, y, thetaBoussole)
 }
@@ -59,7 +63,7 @@ int main(int argc, char **argv)
     // ------------------------------------------
     Vector2d x0 = {40.0, 0.0}; // x0 = {x0, y0}
     Matrix2d Gx0 = 10 * MatrixXd::Identity(2, 2);
-    Matrix2d Galpha = 10 * MatrixXd::Identity(2, 2);
+    Matrix2d Galpha = 100 * MatrixXd::Identity(2, 2);
     MatrixXd C = MatrixXd::Identity(2, 2);
     Matrix2d Gbeta = 25 * MatrixXd::Identity(2, 2);
     Matrix2d A = MatrixXd::Identity(2, 2);
@@ -82,17 +86,18 @@ int main(int argc, char **argv)
     {
         // Acquisition de la commande et du GPS
         ros::spinOnce();
-        U(0) = speed*cos(heading);
-        U(1) = speed*sin(heading);
+        //U(0) = speed*cos(heading);
+        //U(1) = speed*sin(heading);
         // MàJ de la position
-        kalman(x0, Gx0, U, Galpha, A, ykal, Gbeta, C);
+        //kalman(x0, Gx0, U, Galpha, A, ykal, Gbeta, C);
 
         // Création et publication du message contenant la position estimée
         // ------------------------------------------------------------------------
         std_msgs::Float64MultiArray msg;
         msg.data.clear();
         //east, north, cap, vitesse
-        std::vector<double> Xhat = {x0(0), x0(1), heading, speed};
+        //std::vector<double> Xhat = {x0(0), x0(1), heading, speed};
+        std::vector<double> Xhat = {east, north, heading, speed};
         /*message publié
             data(0) = east --> x
             data(1) = north --> y
