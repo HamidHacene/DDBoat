@@ -21,6 +21,7 @@ Eigen::Vector2d Acible = {0, 0};
 
 Eigen::Vector2d u = {1,1};
 double e;
+double dcible;
 
 
 
@@ -62,6 +63,7 @@ void controller(){
   
     double thetav = atan2(Xcible[1] - Xbateau[1],Xcible[0] - Xbateau[0]);
     e = thetav - Xbateau[2];
+    dcible = sqrt(pow(Xcible[1] - Xbateau[1],2)  + pow(Xcible[0] - Xbateau[0],2));
 
     /*
     Eigen::Matrix2d A;
@@ -122,13 +124,10 @@ int main(int argc, char **argv){
         controller();
         geometry_msgs::PoseStamped pose;
         std_msgs::Float64MultiArray com;
-<<<<<<< HEAD
+
          com.data.clear();
-        std::vector<double> X_control = {e,1.0};
-=======
+        std::vector<double> X_control = {e,dcible};
         com.data.clear();
-        std::vector<double> X_control = {u[0], u[1]};
->>>>>>> 25e935183181aff4e9a6ebd383c4fea3f55ec565
         com.data.insert(com.data.end(), X_control.begin(), X_control.end());
 
         //header
