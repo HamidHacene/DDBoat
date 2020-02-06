@@ -4,6 +4,7 @@
 #include "std_msgs/Float64MultiArray.h"
 
 #include "geometry_msgs/Vector3.h"
+#include "visualization_msgs/Marker.h"
 #include "geometry_msgs/PoseStamped.h"
 #include <tf2/LinearMath/Quaternion.h>
 #include "tf/tf.h"
@@ -92,10 +93,17 @@ int main(int argc, char **argv){
     
     ros::NodeHandle commande;
     ros::NodeHandle xbateau_visu;
+    ros::NodeHandle node_handle;
 
     ros::Publisher pub = commande.advertise<std_msgs::Float64MultiArray>("command", 1000);
     ros::Publisher pub2 = xbateau_visu.advertise<geometry_msgs::PoseStamped>("X_bateau_visu", 1000);
-
+    ros::Publisher vis_pub = node_handle.advertise<visualization_msgs::Marker>("visualization_marker", 0);
+    visualization_msgs::Marker marker;
+    marker.header.frame_id = "map";
+    marker.ns = "boat";
+    marker.id = 0;
+    marker.type = visualization_msgs::Marker::MESH_RESOURCE;
+    marker.action = visualization_msgs::Marker::ADD;
 
     
     ros::Rate loop_rate(10);
@@ -105,16 +113,37 @@ int main(int argc, char **argv){
         controller();
         geometry_msgs::PoseStamped pose;
         std_msgs::Float64MultiArray com;
-         com.data.clear();
+        com.data.clear();
         std::vector<double> X_control = {u[0], u[1]};
         com.data.insert(com.data.end(), X_control.begin(), X_control.end());
 
+        //header
+        pose.header.frame_id = "map";
+        pose.header.stamp = ros::Time::now();
+        //position
         pose.pose.position.x = Xbateau[0];
         pose.pose.position.y = Xbateau[1];
         pose.pose.position.z = 0;
         tf::Quaternion q;
         q.setRPY(0,0,Xbateau[2]);
         tf::quaternionTFToMsg(q, pose.pose.orientation);
+        //3D
+
+        marker.header.stamp = ros::Time();
+
+        marker.pose = pose.pose;
+        double scale = 0.4;
+        marker.scale.x = scale*1;
+        marker.scale.y = scale*1;
+        marker.scale.z = scale*1;
+        marker.color.a = 1.0; // alpha = transparence
+        marker.color.r = 1.0;
+        marker.color.g = 1.0;
+        marker.color.b = 1.0;
+        marker.mesh_resource = "package://control/meshs/boat.dae";
+
+
+        vis_pub.publish(marker);
 
         // PUBLICATION
         pub.publish(com);
