@@ -45,7 +45,7 @@ void waypoint()
         waypoint_file.seekg(0, ios::beg);
         getline(waypoint_file, line);
     }
-    Xcible[0] = stod(line.substr(1, 5));
+    Xcible[0] = stod(line.substr(0, 5));
     Xcible[1] = stod(line.substr(6, 10));
 
     ROS_INFO("[MISSION PLANER] WP validated, targeting next WP");
