@@ -122,6 +122,7 @@ add_executable(arduino_driver src/arduino.cpp)
 add_executable(motor_test src/motor_test.cpp)
 add_executable(pid_motor src/pid.cpp)
 add_executable(motor_stop src/motor_stop.cpp)
+add_executable(pid_motor src/pid.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
