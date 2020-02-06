@@ -47,6 +47,8 @@ void waypoint()
     }
     Xcible[0] = stod(line.substr(1, 5));
     Xcible[1] = stod(line.substr(6, 10));
+
+    ROS_INFO("[MISSION PLANER] WP validated, targeting next WP");
 }
 
 double sawtooth(double x)
