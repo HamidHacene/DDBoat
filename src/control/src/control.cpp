@@ -25,6 +25,7 @@ double dcible;
 double x; 
 double y; 
 double theta ;
+double thetav;
 double v; 
 
 
@@ -58,7 +59,7 @@ void controller(){
     y = Xbateau[1];
     theta = Xbateau[2];
     v = Xbateau[3];
-    double thetav = atan2(Xcible[1] - y,Xcible[0] - x);
+    thetav = atan2(Xcible[1] - y,Xcible[0] - x);
     e = thetav - theta;
     dcible = sqrt(pow(Xcible[1] - y,2)  + pow(Xcible[0] - x,2));
 
@@ -122,7 +123,7 @@ int main(int argc, char **argv){
         geometry_msgs::PoseStamped pose;
         std_msgs::Float64MultiArray com;
 
-        std::vector<double> X_control = {e,dcible};
+        std::vector<double> X_control = {thetav,dcible};
         com.data.clear();
         com.data.insert(com.data.end(), X_control.begin(), X_control.end());
 
