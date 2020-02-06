@@ -143,6 +143,9 @@ int main(int argc, char **argv)
     marker.action = visualization_msgs::Marker::ADD;
 
     ros::Rate loop_rate(10);
+
+    waypoint();
+    
     while (ros::ok())
     {
         ros::spinOnce();
