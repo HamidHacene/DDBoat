@@ -73,7 +73,7 @@ int main(int argc, char **argv)
 
         //ros::spinOnce();
         // Pause
-        //loop_rate.sleep();
+        loop_rate.sleep();
     }
 
     return 0;
