@@ -29,7 +29,11 @@ double thetav;
 double v; 
 
 
-
+double sawtooth(double x)
+{
+  return 2.*atan(tan(x/2.));
+  //return fmod(x + M_PI, 2.*M_PI) - M_PI; // this is equivalent
+}
 
 void get_X_bateau(const std_msgs::Float64MultiArray msg){
     Xbateau[0] =    msg.data[0]; //x
@@ -60,7 +64,7 @@ void controller(){
     theta = Xbateau[2];
     v = Xbateau[3];
     thetav = atan2(Xcible[0] - x, Xcible[1] - y);
-    e = thetav - theta;
+    e = sawtooth(thetav - theta);
     dcible = sqrt(pow(Xcible[1] - y,2)  + pow(Xcible[0] - x,2));
 
     /*
