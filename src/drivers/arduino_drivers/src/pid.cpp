@@ -7,7 +7,7 @@
 
 #include "arduino_drivers/Motor_dual.h"
 
-#define RATE 25
+#define RATE 15
 #include "ros/ros.h"
 #include <iostream>
 #include <stdio.h>
