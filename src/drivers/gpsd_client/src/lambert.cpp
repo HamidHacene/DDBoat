@@ -9,7 +9,7 @@
 #include <proj_api.h>
 
 using namespace std;
-double latitude, longitude, track;
+double latitude, longitude, track, speed;
 bool new_data = false;
 bool data_valid = false;
 //double east0 = 253575.276988;
@@ -22,6 +22,7 @@ void navFix_callback(const gpsd_client::GPSFix::ConstPtr& msg)
   latitude =  msg->latitude;
   longitude =  msg->longitude;
   track = msg->track;
+  speed = msg->speed;
   data_valid = (msg->status>=msg->STATUS_MODE_2D);
   new_data = true;
 }
@@ -68,10 +69,11 @@ int main(int argc, char *argv[])
         double north = latitude*M_PI/180.0; // Latitude
         pj_transform(pj_latlong, pj_lambert, 1, 1, &east, &north, nullptr);
 
-        std::vector<double> poseLamb = {north - north0, east - east0, track};
+        std::vector<double> poseLamb = {north - north0, east - east0, speed, track};
         msg_pose.data.insert(msg_pose.data.end(), poseLamb.begin(), poseLamb.end());
         /*message : data(0) = north;
                     data(1) = east; 
+                    data(2) = speed;
             */
         pose_pub.publish(msg_pose);
       }

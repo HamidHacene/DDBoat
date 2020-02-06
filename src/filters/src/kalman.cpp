@@ -7,21 +7,22 @@
 #include "std_msgs/Float64.h"
 #include "std_msgs/Float64MultiArray.h"
 
-# define M_PI           3.14159265358979323846  
+#define M_PI 3.14159265358979323846
 
 using namespace std;
 using namespace Eigen;
 
-Vector3d ykal;
-Vector4d ukal;
+Vector2d ykal;
+double speed;
+double heading;
 
-void kalman_predict(Vector4d& x1, Matrix4d& Gx1, Vector4d& xup, Matrix4d& Gup, Vector4d& u, Matrix4d& Galpha, Matrix4d& A)
+void kalman_predict(Vector2d &x1, Matrix2d &Gx1, Vector2d &xup, Matrix2d &Gup, Vector2d &u, Matrix2d &Galpha, Matrix2d &A)
 {
     Gx1 = A * Gup * A.transpose() + Galpha;
     x1 = A * xup + u;
 }
 
-void kalman_correct(Vector4d&xup, Matrix4d& Gup, Vector4d& x0, Matrix4d& Gx0, Vector3d& y, Matrix3d& Gbeta, MatrixXd& C)
+void kalman_correct(Vector2d &xup, Matrix2d &Gup, Vector2d &x0, Matrix2d &Gx0, Vector2d &y, Matrix2d &Gbeta, MatrixXd &C)
 {
     MatrixXd S = C * Gx0 * C.transpose() + Gbeta;
     MatrixXd K = Gx0 * C.transpose() * S.inverse();
@@ -30,7 +31,7 @@ void kalman_correct(Vector4d&xup, Matrix4d& Gup, Vector4d& x0, Matrix4d& Gx0, Ve
     xup = x0 + K * ytilde;
 }
 
-void kalman(Vector4d& x0, Matrix4d& Gx0, Vector4d& u, Matrix4d& Galpha, Matrix4d& A, Vector3d& y, Matrix3d& Gbeta, MatrixXd& C)
+void kalman(Vector2d &x0, Matrix2d &Gx0, Vector2d &u, Matrix2d &Galpha, Matrix2d &A, Vector2d &y, Matrix2d &Gbeta, MatrixXd &C)
 {
     Vector4d xup;
     Matrix4d Gup;
@@ -38,37 +39,31 @@ void kalman(Vector4d& x0, Matrix4d& Gx0, Vector4d& u, Matrix4d& Galpha, Matrix4d
     kalman_predict(x0, Gx0, xup, Gup, u, Galpha, A);
 }
 
-void commandCallback(const std_msgs::Float64MultiArray::ConstPtr& msg)
+void lambertCallback(const std_msgs::Float64MultiArray::ConstPtr &msg)
 {
-    ukal << 0., 0., msg->data[0], msg->data[1];
-}
-
-void lambertCallback(const std_msgs::Float64MultiArray::ConstPtr& msg)
-{
-    ykal(0) = msg->data[1];  //east
-    ykal(1) = msg->data[0];  //north
+    ykal(0) = msg->data[1]; //east
+    ykal(1) = msg->data[0]; //north
+    speed = msg->data[2];
     // ykal = (x, y, thetaBoussole)
 }
 
-void capCallback(const std_msgs::Float64::ConstPtr& msg)
+void capCallback(const std_msgs::Float64::ConstPtr &msg)
 {
     double thetaB = msg->data;
-    ykal(2) = -thetaB - 90;
+    heading = (-thetaB - 90)*M_PI/180.;
 }
 
 int main(int argc, char **argv)
 {
     //Initialisation Kalman
     // ------------------------------------------
-    Vector4d x0 = {40.0, 0.0, 0.0, 0.1}; // doit être initialisé correctement dans le launch !
-    Matrix4d Gx0 = 10 * MatrixXd::Identity(4, 4);
-    Matrix4d Galpha = MatrixXd::Zero(4, 4);
-    MatrixXd C(3, 4);
-    C << 1., 0., 0., 0., 0., 1., 0., 0., 0., 0., 1., 0.;
-    Matrix2d B;
-    B << 1., -1., 1., 1.;
-    Matrix3d Gbeta;
-    Gbeta << 5., 0., 0., 0., 5., 0., 0., 0., 5. * M_PI / 180.;
+    Vector2d x0 = {40.0, 0.0}; // x0 = {x0, y0}
+    Matrix2d Gx0 = 10 * MatrixXd::Identity(2, 2);
+    Matrix2d Galpha = 10 * MatrixXd::Identity(2, 2);
+    MatrixXd C = MatrixXd::Identity(2, 2);
+    Matrix2d Gbeta = 25 * MatrixXd::Identity(2, 2);
+    Matrix2d A = MatrixXd::Identity(2, 2);
+    Vector2d U = {0., 0.};
     // ------------------------------------------
 
     const double dt = 0.1;
@@ -76,12 +71,9 @@ int main(int argc, char **argv)
     ros::NodeHandle n;
     n.param<double>("pos_x", x0(0), 40.0);
     n.param<double>("pos_y", x0(1), 0.0);
-    n.param<double>("yaw", x0(2), 0.0);
-    n.param<double>("yaw", x0(3), 0.1);
 
     //Abonnement aux topics
     ros::Publisher estimated_state_pub = n.advertise<std_msgs::Float64MultiArray>("poseCorrected", 1000);
-    ros::Subscriber com_sub = n.subscribe("command", 1000, commandCallback);
     ros::Subscriber lamb_sub = n.subscribe("poseRaw", 1000, lambertCallback);
     ros::Subscriber cap_sub = n.subscribe("capFiltered", 1000, capCallback);
     ros::Rate loop_rate(15.);
@@ -90,18 +82,17 @@ int main(int argc, char **argv)
     {
         // Acquisition de la commande et du GPS
         ros::spinOnce();
-
+        U(0) = speed*cos(heading);
+        U(1) = speed*sin(heading);
         // MàJ de la position
-        Matrix4d A;
-        A << 1., 0., 0., dt * cos(x0[2]), 0., 1., 0., dt*sin(x0[2]), 0., 0., 1., 0., 0., 0., 0., 1. - dt*abs(x0[3]);
-        kalman(x0, Gx0, ukal, Galpha, A, ykal, Gbeta, C);
+        kalman(x0, Gx0, U, Galpha, A, ykal, Gbeta, C);
 
         // Création et publication du message contenant la position estimée
         // ------------------------------------------------------------------------
         std_msgs::Float64MultiArray msg;
         msg.data.clear();
         //east, north, cap, vitesse
-        std::vector<double> Xhat = {x0(0), x0(1), x0(2)*M_PI/180. , x0(3)};
+        std::vector<double> Xhat = {x0(0), x0(1), heading, speed};
         /*message publié
             data(0) = east --> x
             data(1) = north --> y
