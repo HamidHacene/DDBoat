@@ -54,7 +54,7 @@ void lambertCallback(const std_msgs::Float64MultiArray::ConstPtr &msg)
 void capCallback(const std_msgs::Float64::ConstPtr &msg)
 {
     double thetaB = msg->data;
-    heading = (thetaB)*M_PI/180.;
+    heading = (90 - thetaB)*M_PI/180.;
 }
 
 int main(int argc, char **argv)
