@@ -34,7 +34,7 @@ double theta;
 double thetav;
 double v;
 
-ifstream waypoint_file("/home/colin/Documents/ENSTA/DDBoat/DDBoat/mission.txt");
+ifstream waypoint_file("/home/ue32/zboubiTeam/ddboat/mission.txt");
 
 void waypoint()
 {
