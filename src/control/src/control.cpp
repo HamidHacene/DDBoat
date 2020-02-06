@@ -22,7 +22,10 @@ Eigen::Vector2d Acible = {0, 0};
 Eigen::Vector2d u = {1,1};
 double e;
 double dcible;
-
+double x; 
+double y; 
+double theta ;
+double v; 
 
 
 
@@ -51,19 +54,13 @@ void get_acceleration_cible(const geometry_msgs::Vector3 msg4){
 }
 
 void controller(){
-    double x = Xbateau[0]; 
-    double y = Xbateau[1];
-    double theta = Xbateau[2];
-    double v = Xbateau[3];
-
-    double st = std::sin(theta);
-    double ct = std::cos(theta);
-
-
-  
-    double thetav = atan2(Xcible[1] - Xbateau[1],Xcible[0] - Xbateau[0]);
-    e = thetav - Xbateau[2];
-    dcible = sqrt(pow(Xcible[1] - Xbateau[1],2)  + pow(Xcible[0] - Xbateau[0],2));
+    x = Xbateau[0]; 
+    y = Xbateau[1];
+    theta = Xbateau[2];
+    v = Xbateau[3];
+    double thetav = atan2(Xcible[1] - y,Xcible[0] - x);
+    e = thetav - theta;
+    dcible = sqrt(pow(Xcible[1] - y,2)  + pow(Xcible[0] - x,2));
 
     /*
     Eigen::Matrix2d A;
