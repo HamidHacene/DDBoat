@@ -122,7 +122,7 @@ int main(int argc, char **argv)
     ros::NodeHandle vcible;
     ros::NodeHandle acible;
     ros::Subscriber sub1 = xbateau.subscribe("poseCorrected", 1000, get_X_bateau);
-    ros::Subscriber sub2 = xcible.subscribe("position_cible", 1000, get_position_cible);
+    //ros::Subscriber sub2 = xcible.subscribe("position_cible", 1000, get_position_cible);
     ros::Subscriber sub3 = vcible.subscribe("vitesse_cible", 1000, get_vitesse_cible);
     ros::Subscriber sub4 = vcible.subscribe("acceleration_cible", 1000, get_acceleration_cible);
 
@@ -145,7 +145,7 @@ int main(int argc, char **argv)
     ros::Rate loop_rate(10);
 
     waypoint();
-    
+
     while (ros::ok())
     {
         ros::spinOnce();
