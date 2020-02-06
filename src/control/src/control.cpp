@@ -123,7 +123,7 @@ int main(int argc, char **argv){
         geometry_msgs::PoseStamped pose;
         std_msgs::Float64MultiArray com;
 
-        std::vector<double> X_control = {thetav,dcible};
+        std::vector<double> X_control = {e,thetav};
         com.data.clear();
         com.data.insert(com.data.end(), X_control.begin(), X_control.end());
 
