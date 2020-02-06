@@ -33,8 +33,8 @@ void kalman_correct(Vector2d &xup, Matrix2d &Gup, Vector2d &x0, Matrix2d &Gx0, V
 
 void kalman(Vector2d &x0, Matrix2d &Gx0, Vector2d &u, Matrix2d &Galpha, Matrix2d &A, Vector2d &y, Matrix2d &Gbeta, MatrixXd &C)
 {
-    Vector4d xup;
-    Matrix4d Gup;
+    Vector2d xup;
+    Matrix2d Gup;
     kalman_correct(xup, Gup, x0, Gx0, y, Gbeta, C);
     kalman_predict(x0, Gx0, xup, Gup, u, Galpha, A);
 }
