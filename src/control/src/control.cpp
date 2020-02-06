@@ -2,7 +2,12 @@
 #include <vector>
 #include "ros/ros.h"
 #include "std_msgs/Float64MultiArray.h"
+
 #include "geometry_msgs/Vector3.h"
+#include "geometry_msgs/PoseStamped.h"
+#include <tf2/LinearMath/Quaternion.h>
+#include "tf/tf.h"
+
 #include "eigen3/Eigen/Dense"
 
 # define M_PI           3.14159265358979323846  
@@ -86,7 +91,10 @@ int main(int argc, char **argv){
     //DECLARATION DE PUBLISHERS
     
     ros::NodeHandle commande;
+    ros::NodeHandle xbateau_visu;
+
     ros::Publisher pub = commande.advertise<std_msgs::Float64MultiArray>("command", 1000);
+    ros::Publisher pub2 = xbateau_visu.advertise<geometry_msgs::PoseStamped>("X_bateau_visu", 1000);
 
 
     
@@ -95,13 +103,27 @@ int main(int argc, char **argv){
         
         ros::spinOnce();
         controller();
+        geometry_msgs::PoseStamped pose;
         std_msgs::Float64MultiArray com;
          com.data.clear();
         std::vector<double> X_control = {u[0], u[1]};
         com.data.insert(com.data.end(), X_control.begin(), X_control.end());
 
+        pose.pose.position.x = Xbateau[0];
+        pose.pose.position.y = Xbateau[1];
+        pose.pose.position.z = 0;
+        tf::Quaternion q;
+        q.setRPY(0,0,Xbateau[2]);
+        tf::quaternionTFToMsg(q, pose.pose.orientation);
+
         // PUBLICATION
         pub.publish(com);
+        pub2.publish(pose);
+
+        ROS_INFO("position x : %f", Xbateau[0]);
+        ROS_INFO("position  y: %f", Xbateau[1]);
+        ROS_INFO(" angle theta : %f", Xbateau[2]);
+        ROS_INFO(" vitesse : %f",Xbateau[3]);
         
         loop_rate.sleep();
 
