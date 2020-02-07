@@ -6,8 +6,7 @@
     <node name="lambert_node" pkg="gpsd_client" type="lambert_node" />
     <node name="cap_node" pkg="cap_boat" type="cap_talker"/>    
     <node name="cap_filter_node" pkg="filters" type="cap_filter"/>
-    <node name="control" pkg="control" type="control" />
-    <node name="target" pkg="control" type="target" />   
+    <node name="control" pkg="control" type="control" />  
     <node name="kalman" pkg="filters" type="kalman" />
 
     <node name="arduino_driver" pkg="arduino_drivers" type="arduino_driver"/>

@@ -65,12 +65,6 @@ void get_X_bateau(const std_msgs::Float64MultiArray msg)
     Xbateau[3] = msg.data[3]; //v
 }
 
-void get_position_cible(const geometry_msgs::Vector3 msg2)
-{
-    Xcible[0] = msg2.x;
-    Xcible[1] = msg2.y;
-}
-
 void get_vitesse_cible(const geometry_msgs::Vector3 msg3)
 {
     Vcible[0] = msg3.x;
@@ -153,7 +147,7 @@ int main(int argc, char **argv)
         geometry_msgs::PoseStamped pose;
         std_msgs::Float64MultiArray com;
 
-        vector<double> X_control = {Xcible[0], thetav};
+        vector<double> X_control = {e, thetav};
         com.data.clear();
         com.data.insert(com.data.end(), X_control.begin(), X_control.end());
 
