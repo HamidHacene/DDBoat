@@ -16,8 +16,8 @@ double vitesse_gauche;
 
 
 void conversion(){
-    v[0] = 150 - (u[0]*60/M_PI) ;
-    v[1] = 150 + (u[0]*60/M_PI) ;
+    v[0] = 120 - (u[0]*100/M_PI) ;
+    v[1] = 120 + (u[0]*100/M_PI) ;
     
     
 }
