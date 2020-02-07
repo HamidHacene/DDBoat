@@ -147,7 +147,7 @@ int main(int argc, char **argv)
         geometry_msgs::PoseStamped pose;
         std_msgs::Float64MultiArray com;
 
-        vector<double> X_control = {e, dcible};
+        vector<double> X_control = {thetav, Xcible[0]};
         com.data.clear();
         com.data.insert(com.data.end(), X_control.begin(), X_control.end());
 
