@@ -187,7 +187,7 @@ int main(int argc, char **argv)
         ROS_INFO(" angle theta : %f", Xbateau[2]);
         ROS_INFO(" vitesse : %f", Xbateau[3]);
 
-        if(dcible < 4)
+        if(dcible < 3)
         {
             waypoint();
         }
