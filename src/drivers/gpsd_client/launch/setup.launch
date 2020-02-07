@@ -14,5 +14,8 @@
     <node name="motor_input" pkg="control" type="motor_input" />
     <node name="pid" pkg="arduino_drivers" type="pid_motor"/>
 
+    <node pkg="rosbag" type="record" name="rosbag_record_diag"
+       args="record -a"/> 
+
 
 </launch>
